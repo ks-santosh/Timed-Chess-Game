@@ -123,6 +123,8 @@ PLLJ_PLLSPE_INFO.txt
 *.i*86
 *.x86_64
 *.hex
+# Include all hex files from MemInitFiles folder
+!**/MemInitFiles/*.hex
 
 # Debug files
 *.dSYM/
