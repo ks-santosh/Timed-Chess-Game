@@ -43,7 +43,6 @@ set_global_assignment -name TOP_LEVEL_ENTITY Chess
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.2
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "13:37:37  APRIL 22, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.2 Lite Edition"
-set_global_assignment -name VERILOG_FILE Chess.v
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name BOARD "DE1-SoC Board"
 set_global_assignment -name EDA_SIMULATION_TOOL "Questa Intel FPGA (Verilog)"
@@ -53,3 +52,46 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_location_assignment PIN_AJ17 -to LT24Data[0]
+set_location_assignment PIN_AJ19 -to LT24Data[1]
+set_location_assignment PIN_AK19 -to LT24Data[2]
+set_location_assignment PIN_AK18 -to LT24Data[3]
+set_location_assignment PIN_AE16 -to LT24Data[4]
+set_location_assignment PIN_AF16 -to LT24Data[5]
+set_location_assignment PIN_AG17 -to LT24Data[6]
+set_location_assignment PIN_AA18 -to LT24Data[7]
+set_location_assignment PIN_AA19 -to LT24Data[8]
+set_location_assignment PIN_AE17 -to LT24Data[9]
+set_location_assignment PIN_AC20 -to LT24Data[10]
+set_location_assignment PIN_AH19 -to LT24Data[11]
+set_location_assignment PIN_AJ20 -to LT24Data[12]
+set_location_assignment PIN_AH20 -to LT24Data[13]
+set_location_assignment PIN_AK21 -to LT24Data[14]
+set_location_assignment PIN_AD19 -to LT24Data[15]
+set_location_assignment PIN_AG20 -to LT24Reset_n
+set_location_assignment PIN_AG16 -to LT24RS
+set_location_assignment PIN_AD20 -to LT24CS_n
+set_location_assignment PIN_AH18 -to LT24Rd_n
+set_location_assignment PIN_AH17 -to LT24Wr_n
+set_location_assignment PIN_AJ21 -to LT24LCDOn
+set_location_assignment PIN_AA16 -to clock
+set_location_assignment PIN_AC12 -to globalReset
+set_location_assignment PIN_V16 -to resetApp
+set_location_assignment PIN_AB12 -to StartStopSwitch
+set_location_assignment PIN_Y16 -to KeyLeft
+set_location_assignment PIN_W15 -to KeyUp
+set_location_assignment PIN_AA15 -to KeyDown
+set_location_assignment PIN_AA14 -to KeyRight
+set_global_assignment -name VERILOG_FILE UpCounterNbit.v
+set_global_assignment -name VERILOG_FILE LT24Display.v
+set_global_assignment -name VERILOG_FILE ChessStartScreen.v
+set_global_assignment -name VERILOG_FILE Chess.v
+set_global_assignment -name CDF_FILE Chess.cdf
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
