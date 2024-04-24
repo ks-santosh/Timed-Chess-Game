@@ -46,7 +46,7 @@ set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.2 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name BOARD "DE1-SoC Board"
 set_global_assignment -name EDA_SIMULATION_TOOL "Questa Intel FPGA (Verilog)"
-set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_TIME_SCALE "1 ns" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
@@ -89,9 +89,18 @@ set_location_assignment PIN_Y16 -to KeyLeft
 set_location_assignment PIN_W15 -to KeyUp
 set_location_assignment PIN_AA15 -to KeyDown
 set_location_assignment PIN_AA14 -to KeyRight
+set_global_assignment -name EDA_NETLIST_WRITER_OUTPUT_DIR simulation -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH Chess_tb -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_SETUP_SCRIPT "../../ELEC5566M-Resources/simulation/load_sim.tcl" -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME Chess_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id Chess_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME Chess_tb -section_id Chess_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE simulation/Chess_tb.v -section_id Chess_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE simulation/LT24FunctionalModel.v -section_id Chess_tb
+set_global_assignment -name VERILOG_FILE ChessEngine.v
 set_global_assignment -name VERILOG_FILE UpCounterNbit.v
 set_global_assignment -name VERILOG_FILE LT24Display.v
-set_global_assignment -name VERILOG_FILE ChessStartScreen.v
 set_global_assignment -name VERILOG_FILE Chess.v
 set_global_assignment -name CDF_FILE Chess.cdf
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
