@@ -40,6 +40,7 @@ reg  [15:0] pixelData;
 wire        pixelReady;
 reg         pixelWrite;
 reg  [16:0] PixelIdx;
+reg  [1:0]  State;
 
 LT24Display Display (
     //Clock and Reset In
@@ -115,16 +116,29 @@ always @ (posedge clock or posedge resetApp) begin
     end
 end
 
+localparam START_STATE = 3'd0;
+localparam PLAY_STATE  = 3'd1;
+
+
 always @ (posedge clock or posedge resetApp) begin 
     if (resetApp) begin
         pixelData <= 16'b0;
         xAddr     <= 8'b0;
         yAddr     <= 9'b0;
+		  State     <= START_STATE;
     end else if (pixelReady) begin
-        xAddr <= xCount;
-        yAddr <= yCount;
-        PixelIdx = (yCount * LCD_WIDTH) + xCount;
-		  pixelData <= StartScreenImg[PixelIdx];
+		 xAddr <= xCount;
+	    yAddr <= yCount;
+    	 PixelIdx = (yCount * LCD_WIDTH) + xCount;
+
+		case (State)
+			START_STATE: begin
+				pixelData <= StartScreenImg[PixelIdx];
+			end
+			default : begin
+				State <= START_STATE;
+			end
+		endcase
     end
     
 end
