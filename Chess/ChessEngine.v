@@ -28,7 +28,7 @@ localparam LCD_SIZE   = LCD_WIDTH * LCD_HEIGHT;
 reg [15:0] StartScreenImg [LCD_SIZE - 1:0];
 
 initial begin
-    $readmemh("MemInitFiles/StartScreenImg.hex", StartScreenImg);
+    $readmemh("SpriteSheet.hex", StartScreenImg);
 end
 
 //
@@ -119,6 +119,9 @@ end
 localparam START_STATE = 3'd0;
 localparam PLAY_STATE  = 3'd1;
 
+localparam ON = 1'b1;
+localparam OFF = 1'b0;
+
 
 always @ (posedge clock or posedge resetApp) begin 
     if (resetApp) begin
@@ -134,6 +137,15 @@ always @ (posedge clock or posedge resetApp) begin
 		case (State)
 			START_STATE: begin
 				pixelData <= StartScreenImg[PixelIdx];
+				if(StartStopSwitch == ON) begin
+					State <= PLAY_STATE;
+				end
+			end
+			PLAY_STATE: begin
+				pixelData <= StartScreenImg[PixelIdx];
+				if(StartStopSwitch == OFF) begin
+					State <= START_STATE;
+				end
 			end
 			default : begin
 				State <= START_STATE;
