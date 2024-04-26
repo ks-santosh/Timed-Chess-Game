@@ -28,7 +28,7 @@ localparam LCD_SIZE   = LCD_WIDTH * LCD_HEIGHT;
 reg [15:0] StartScreenImg [LCD_SIZE - 1:0];
 
 initial begin
-    $readmemh("SpriteSheet.hex", StartScreenImg);
+    $readmemh("MemInitFiles/SpriteSheet.hex", StartScreenImg);
 end
 
 //
@@ -115,6 +115,22 @@ always @ (posedge clock or posedge resetApp) begin
         //You could also control pixelWrite and pixelData in a State Machine.
     end
 end
+
+parameter CHESS_SQUARES	=	64;
+parameter SQUARE_WIDTH  =  4;
+parameter MATRIX_WIDTH = CHESS_SQUARES * SQUARE_WIDTH;
+
+wire [MATRIX_WIDTH - 1:0] ChessMatrix;
+
+ChessLayoutMatrix ChessLayoutMatrix(
+
+    .KeyLeft(KeyLeft),
+    .KeyUp(KeyUp),
+    .KeyDown(KeyDown),
+    .KeyRight(KeyRight),
+	 .resetApp(resetApp),
+    .Matrix(ChessMatrix)
+);
 
 localparam START_STATE = 3'd0;
 localparam PLAY_STATE  = 3'd1;
