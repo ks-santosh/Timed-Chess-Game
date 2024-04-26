@@ -25,10 +25,16 @@ localparam LCD_WIDTH  = 240;
 localparam LCD_HEIGHT = 320;
 localparam LCD_SIZE   = LCD_WIDTH * LCD_HEIGHT;
 
-reg [15:0] StartScreenImg [LCD_SIZE - 1:0];
+localparam CLOCK_HEIGHT = 40;
+localparam CLOCK_SIZE = CLOCK_HEIGHT * LCD_WIDTH;
+
+localparam SHEET_SIZE = LCD_SIZE + CLOCK_SIZE;
+reg [15:0] SpriteSheet [0:SHEET_SIZE - 1];
+
 
 initial begin
-    $readmemh("MemInitFiles/SpriteSheet.hex", StartScreenImg);
+    $readmemh("MemInitFiles/StartScreenImg.hex", SpriteSheet, 0, LCD_SIZE-1);
+	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, SHEET_SIZE-1);
 end
 
 //
@@ -138,6 +144,26 @@ localparam PLAY_STATE  = 3'd1;
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
 
+function [16:0] ChessPixelIdx;
+	input [7:0] x;
+	input [8:0] y;
+	input [1:0] State;
+	begin
+	PixelIdx = (y * LCD_WIDTH) + x;
+	ChessPixelIdx = PixelIdx;
+	if(State == START_STATE) begin
+		ChessPixelIdx = PixelIdx;
+	end else begin
+		if(y < CLOCK_HEIGHT) begin
+			ChessPixelIdx = PixelIdx + LCD_SIZE;
+		end else if (y >= LCD_HEIGHT - CLOCK_HEIGHT) begin
+			ChessPixelIdx = LCD_WIDTH*(CLOCK_HEIGHT - (y - (LCD_HEIGHT - CLOCK_HEIGHT))) - x + LCD_SIZE;
+		end else begin
+			ChessPixelIdx = 0;
+		end
+	end	
+	end
+endfunction
 
 always @ (posedge clock or posedge resetApp) begin 
     if (resetApp) begin
@@ -148,17 +174,15 @@ always @ (posedge clock or posedge resetApp) begin
     end else if (pixelReady) begin
 		 xAddr <= xCount;
 	    yAddr <= yCount;
-    	 PixelIdx = (yCount * LCD_WIDTH) + xCount;
+		pixelData <= SpriteSheet[ChessPixelIdx(xCount, yCount, State)];
 
 		case (State)
 			START_STATE: begin
-				pixelData <= StartScreenImg[PixelIdx];
 				if(StartStopSwitch == ON) begin
 					State <= PLAY_STATE;
 				end
 			end
 			PLAY_STATE: begin
-				pixelData <= StartScreenImg[PixelIdx];
 				if(StartStopSwitch == OFF) begin
 					State <= START_STATE;
 				end
@@ -167,6 +191,7 @@ always @ (posedge clock or posedge resetApp) begin
 				State <= START_STATE;
 			end
 		endcase
+
     end
     
 end
