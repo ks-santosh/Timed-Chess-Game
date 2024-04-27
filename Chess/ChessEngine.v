@@ -39,11 +39,19 @@ localparam LIGHT_CHESSMEN_START = DARK_CHESSMEN_START + CHESSMEN_SIZE;
 // chess square
 localparam LIGHT_IDX = LIGHT_CHESSMEN_START + CHESSMEN_SIZE;
 localparam DARK_IDX = LIGHT_IDX + 1;
+localparam PRESELECT_IDX = DARK_IDX + 1;
+localparam SELECT_IDX = PRESELECT_IDX + 1;
+localparam POSTSELECT_IDX = SELECT_IDX + 1;
+
 localparam DARK_COLOUR = 16'h7A69;
 localparam LIGHT_COLOUR = 16'hEF9B;
+localparam PRESELECT_COLOUR = 16'hFd26; // orange 
+localparam SELECT_COLOUR = 16'h347F; //blue
+localparam POSTSELECT_COLOUR = 16'h37E7; // green
+
 
 // total size
-localparam SHEET_SIZE = DARK_IDX;
+localparam SHEET_SIZE = POSTSELECT_IDX;
 
 reg [15:0] SpriteSheet [0:SHEET_SIZE];
 
@@ -55,6 +63,9 @@ initial begin
 
 	 SpriteSheet[LIGHT_IDX] = LIGHT_COLOUR;
 	 SpriteSheet[DARK_IDX] = DARK_COLOUR;
+	 SpriteSheet[PRESELECT_IDX] = PRESELECT_COLOUR;
+	 SpriteSheet[SELECT_IDX] = SELECT_COLOUR;
+	 SpriteSheet[POSTSELECT_IDX] = POSTSELECT_COLOUR;
 end
 
 //
@@ -141,9 +152,9 @@ always @ (posedge clock or posedge resetApp) begin
     end
 end
 
-parameter CHESS_SQUARES	=	64;
-parameter SQUARE_WIDTH  =  4;
-parameter MATRIX_WIDTH = CHESS_SQUARES * SQUARE_WIDTH;
+localparam CHESS_SQUARES	=	64;
+localparam SQUARE_WIDTH  =  8;
+localparam MATRIX_WIDTH = CHESS_SQUARES * SQUARE_WIDTH;
 
 wire [MATRIX_WIDTH - 1:0] ChessMatrix;
 
@@ -154,11 +165,15 @@ ChessLayoutMatrix ChessLayoutMatrix(
     .KeyDown(KeyDown),
     .KeyRight(KeyRight),
 	 .resetApp(resetApp),
-    .Matrix(ChessMatrix)
+    .Layout(ChessMatrix)
 );
 
 localparam START_STATE = 3'd0;
 localparam PLAY_STATE  = 3'd1;
+
+localparam PRESELECT = 2'd1;
+localparam SELECT = 2'd2;
+localparam POSTSELECT = 2'd3;
 
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
@@ -175,6 +190,11 @@ function [16:0] ChessPixelIdx;
 		reg [2:0] Chessman;
 		reg ChessmanColour;
 		reg SquareColour;
+		reg [1:0] SelectType;
+		
+		reg [7:0] RelativeX;
+		reg [8:0] RelativeY;
+		
 		
 		PixelIdx = (y * LCD_WIDTH) + x;
 		ChessPixelIdx = PixelIdx;
@@ -182,8 +202,12 @@ function [16:0] ChessPixelIdx;
 		XQuotient = x / SQUARE_SIZE;
 		YQuotient = (y - CLOCK_HEIGHT) / SQUARE_SIZE;
 		SquareIdx =	(YQuotient * 8) + XQuotient;
-		Chessman = ChessMatrix[SquareIdx*SQUARE_WIDTH +: SQUARE_WIDTH - 1];
-		ChessmanColour =  ChessMatrix[(SquareIdx+1)*SQUARE_WIDTH - 1];
+		RelativeY = y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient;
+		RelativeX = x - SQUARE_SIZE*XQuotient;
+		
+		Chessman = ChessMatrix[SquareIdx*SQUARE_WIDTH +: 3];
+		ChessmanColour =  ChessMatrix[(SquareIdx+1)*SQUARE_WIDTH - 5];
+		SelectType = ChessMatrix[SquareIdx*SQUARE_WIDTH + 4 +: 2]; 
 		
 		if(State == START_STATE) begin
 			ChessPixelIdx = PixelIdx;
@@ -214,8 +238,12 @@ function [16:0] ChessPixelIdx;
 					end
 				
 				end
-				if(Chessman != 0) begin
-				ChessPixelIdx = DARK_CHESSMEN_START + (CHESSMEN_SIZE * ChessmanColour) + (CHESSMEN_SIZE/2)*SquareColour + (y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient)*180 + (x - SQUARE_SIZE*XQuotient + (Chessman - 1)*SQUARE_SIZE);
+				if(SelectType == PRESELECT) begin
+					if((RelativeY < 2) || (RelativeY >= SQUARE_SIZE - 2) || (RelativeX < 2) || (RelativeX >= SQUARE_SIZE - 2)) begin
+						ChessPixelIdx = PRESELECT_IDX;
+					end
+				end else if(Chessman != 0) begin
+					ChessPixelIdx = DARK_CHESSMEN_START + (CHESSMEN_SIZE * ChessmanColour) + (CHESSMEN_SIZE/2)*SquareColour + RelativeY*180 + (RelativeX + (Chessman - 1)*SQUARE_SIZE);
 				end
 			end	
 		end
