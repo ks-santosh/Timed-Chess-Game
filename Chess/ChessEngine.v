@@ -183,7 +183,7 @@ function [16:0] ChessPixelIdx;
 		YQuotient = (y - CLOCK_HEIGHT) / SQUARE_SIZE;
 		SquareIdx =	(YQuotient * 8) + XQuotient;
 		Chessman = ChessMatrix[SquareIdx*SQUARE_WIDTH +: SQUARE_WIDTH - 1];
-		ChessmanColour =  ChessMatrix[SquareIdx*SQUARE_WIDTH - 1];
+		ChessmanColour =  ChessMatrix[(SquareIdx+1)*SQUARE_WIDTH - 1];
 		
 		if(State == START_STATE) begin
 			ChessPixelIdx = PixelIdx;
