@@ -214,8 +214,8 @@ function [16:0] ChessPixelIdx;
 					end
 				
 				end
-				if(Chessman == 3'h1) begin
-					ChessPixelIdx = DARK_CHESSMEN_START + (CHESSMEN_SIZE * ChessmanColour) + (CHESSMEN_SIZE/2)*SquareColour + (y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient)*180 + (x - SQUARE_SIZE*XQuotient);
+				if(Chessman != 0) begin
+				ChessPixelIdx = DARK_CHESSMEN_START + (CHESSMEN_SIZE * ChessmanColour) + (CHESSMEN_SIZE/2)*SquareColour + (y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient)*180 + (x - SQUARE_SIZE*XQuotient + (Chessman - 1)*SQUARE_SIZE);
 				end
 			end	
 		end
