@@ -21,26 +21,37 @@ module ChessEngine (
     output        resetApp
 );
 
+// LCD
 localparam LCD_WIDTH  = 240;
 localparam LCD_HEIGHT = 320;
 localparam LCD_SIZE   = LCD_WIDTH * LCD_HEIGHT;
 
+// clock banner
 localparam CLOCK_HEIGHT = 40;
 localparam CLOCK_SIZE = CLOCK_HEIGHT * LCD_WIDTH;
 
-localparam SHEET_SIZE = LCD_SIZE + CLOCK_SIZE;
+// chess pieces
+localparam DARK_CHESSMEN_START = LCD_SIZE + CLOCK_SIZE;
+localparam CHESSMEN_SIZE = 30*30*6;
+localparam LIGHT_CHESSMEN_START = DARK_CHESSMEN_START + CHESSMEN_SIZE;
 
-localparam LIGHT_IDX = SHEET_SIZE;
-localparam DARK_IDX = SHEET_SIZE + 1;
-
+// chess square
+localparam LIGHT_IDX = LIGHT_CHESSMEN_START + CHESSMEN_SIZE;
+localparam DARK_IDX = LIGHT_IDX + 1;
 localparam DARK_COLOUR = 16'h7A69;
 localparam LIGHT_COLOUR = 16'hEF9B;
 
-reg [15:0] SpriteSheet [0:SHEET_SIZE+1];
+// total size
+localparam SHEET_SIZE = DARK_IDX;
+
+reg [15:0] SpriteSheet [0:SHEET_SIZE];
 
 initial begin
     $readmemh("MemInitFiles/StartScreenImg.hex", SpriteSheet, 0, LCD_SIZE-1);
-	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, SHEET_SIZE-1);
+	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, LCD_SIZE + CLOCK_SIZE - 1);
+	 $readmemh("MemInitFiles/DarkChessmen.hex", SpriteSheet, DARK_CHESSMEN_START, DARK_CHESSMEN_START + CHESSMEN_SIZE - 1);
+	 $readmemh("MemInitFiles/LightChessmen.hex", SpriteSheet, LIGHT_CHESSMEN_START, LIGHT_CHESSMEN_START + CHESSMEN_SIZE - 1);
+
 	 SpriteSheet[LIGHT_IDX] = LIGHT_COLOUR;
 	 SpriteSheet[DARK_IDX] = DARK_COLOUR;
 end
