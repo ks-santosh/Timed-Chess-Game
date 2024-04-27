@@ -29,12 +29,20 @@ localparam CLOCK_HEIGHT = 40;
 localparam CLOCK_SIZE = CLOCK_HEIGHT * LCD_WIDTH;
 
 localparam SHEET_SIZE = LCD_SIZE + CLOCK_SIZE;
-reg [15:0] SpriteSheet [0:SHEET_SIZE - 1];
 
+localparam LIGHT_IDX = SHEET_SIZE;
+localparam DARK_IDX = SHEET_SIZE + 1;
+
+localparam DARK_COLOUR = 16'h7A69;
+localparam LIGHT_COLOUR = 16'hEF9B;
+
+reg [15:0] SpriteSheet [0:SHEET_SIZE+1];
 
 initial begin
     $readmemh("MemInitFiles/StartScreenImg.hex", SpriteSheet, 0, LCD_SIZE-1);
 	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, SHEET_SIZE-1);
+	 SpriteSheet[LIGHT_IDX] = LIGHT_COLOUR;
+	 SpriteSheet[DARK_IDX] = DARK_COLOUR;
 end
 
 //
@@ -45,7 +53,6 @@ reg  [ 8:0] yAddr;
 reg  [15:0] pixelData;
 wire        pixelReady;
 reg         pixelWrite;
-reg  [16:0] PixelIdx;
 reg  [1:0]  State;
 
 LT24Display Display (
@@ -144,24 +151,50 @@ localparam PLAY_STATE  = 3'd1;
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
 
+localparam CHESS_SQUARE_SIZE = 30;
+
 function [16:0] ChessPixelIdx;
 	input [7:0] x;
 	input [8:0] y;
 	input [1:0] State;
 	begin
-	PixelIdx = (y * LCD_WIDTH) + x;
-	ChessPixelIdx = PixelIdx;
-	if(State == START_STATE) begin
+		reg [16:0] PixelIdx;
+		reg [2:0] XQuotient;
+		reg [2:0] YQuotient;
+		
+		PixelIdx = (y * LCD_WIDTH) + x;
 		ChessPixelIdx = PixelIdx;
-	end else begin
-		if(y < CLOCK_HEIGHT) begin
-			ChessPixelIdx = PixelIdx + LCD_SIZE;
-		end else if (y >= LCD_HEIGHT - CLOCK_HEIGHT) begin
-			ChessPixelIdx = LCD_WIDTH*(CLOCK_HEIGHT - (y - (LCD_HEIGHT - CLOCK_HEIGHT))) - x + LCD_SIZE;
+		
+		XQuotient = x / CHESS_SQUARE_SIZE;
+		YQuotient = (y - CLOCK_HEIGHT) / CHESS_SQUARE_SIZE;
+			
+		if(State == START_STATE) begin
+			ChessPixelIdx = PixelIdx;
 		end else begin
-			ChessPixelIdx = 0;
+			if(y < CLOCK_HEIGHT) begin
+				ChessPixelIdx = PixelIdx + LCD_SIZE;
+			
+			end else if (y >= LCD_HEIGHT - CLOCK_HEIGHT) begin
+				ChessPixelIdx = LCD_WIDTH*(CLOCK_HEIGHT - (y - (LCD_HEIGHT - CLOCK_HEIGHT))) - x + LCD_SIZE;
+			
+			end else begin
+				if (YQuotient % 2 == 0) begin
+					if(XQuotient % 2 == 0) begin
+						ChessPixelIdx	= LIGHT_IDX;
+					end else begin
+						ChessPixelIdx	= DARK_IDX;
+					end
+				
+				end else begin
+					if(XQuotient % 2 == 0) begin
+						ChessPixelIdx	= DARK_IDX;
+					end else begin
+						ChessPixelIdx	= LIGHT_IDX;
+					end
+				
+				end
+			end	
 		end
-	end	
 	end
 endfunction
 
