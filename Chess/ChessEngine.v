@@ -33,7 +33,7 @@ localparam CLOCK_SIZE = CLOCK_HEIGHT * LCD_WIDTH;
 // chess pieces
 localparam DARK_CHESSMEN_START = LCD_SIZE + CLOCK_SIZE;
 localparam SQUARE_SIZE = 30;
-localparam CHESSMEN_SIZE = SQUARE_SIZE*SQUARE_SIZE*6;
+localparam CHESSMEN_SIZE = SQUARE_SIZE*SQUARE_SIZE*6*2;
 localparam LIGHT_CHESSMEN_START = DARK_CHESSMEN_START + CHESSMEN_SIZE;
 
 // chess square
@@ -172,7 +172,9 @@ function [16:0] ChessPixelIdx;
 		reg [2:0] XQuotient;
 		reg [2:0] YQuotient;
 		reg [5:0] SquareIdx;
-		reg [3:0] SquareType;
+		reg [2:0] Chessman;
+		reg ChessmanColour;
+		reg SquareColour;
 		
 		PixelIdx = (y * LCD_WIDTH) + x;
 		ChessPixelIdx = PixelIdx;
@@ -180,7 +182,8 @@ function [16:0] ChessPixelIdx;
 		XQuotient = x / SQUARE_SIZE;
 		YQuotient = (y - CLOCK_HEIGHT) / SQUARE_SIZE;
 		SquareIdx =	(YQuotient * 8) + XQuotient;
-		SquareType = ChessMatrix[SquareIdx*SQUARE_WIDTH +: SQUARE_WIDTH];
+		Chessman = ChessMatrix[SquareIdx*SQUARE_WIDTH +: SQUARE_WIDTH - 1];
+		ChessmanColour =  ChessMatrix[SquareIdx*SQUARE_WIDTH - 1];
 		
 		if(State == START_STATE) begin
 			ChessPixelIdx = PixelIdx;
@@ -195,21 +198,25 @@ function [16:0] ChessPixelIdx;
 				if (YQuotient % 2 == 0) begin
 					if(XQuotient % 2 == 0) begin
 						ChessPixelIdx	= LIGHT_IDX;
+						SquareColour = 1;
 					end else begin
 						ChessPixelIdx	= DARK_IDX;
+						SquareColour = 0;
 					end
 				
 				end else begin
 					if(XQuotient % 2 == 0) begin
 						ChessPixelIdx	= DARK_IDX;
+						SquareColour = 0;
 					end else begin
 						ChessPixelIdx	= LIGHT_IDX;
+						SquareColour = 1;
 					end
 				
 				end
-					if(SquareType == 4'h1) begin
-						ChessPixelIdx = DARK_CHESSMEN_START + (y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient)*180 + (x - SQUARE_SIZE*XQuotient);
-					end
+				if(Chessman == 3'h1) begin
+					ChessPixelIdx = DARK_CHESSMEN_START + (CHESSMEN_SIZE * ChessmanColour) + (CHESSMEN_SIZE/2)*SquareColour + (y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient)*180 + (x - SQUARE_SIZE*XQuotient);
+				end
 			end	
 		end
 	end
