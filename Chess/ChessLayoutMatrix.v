@@ -36,7 +36,7 @@ reg [5:0] SelectSquareIdx;
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
 
-always @ (posedge KeyLeft or posedge KeyUp or posedge KeyDown or posedge KeyRight or posedge resetApp) begin
+always @ (posedge clock or posedge resetApp) begin
     if (resetApp) begin
 		Layout <= InitLayout;
 		SelectSquareX = 3'd2;
