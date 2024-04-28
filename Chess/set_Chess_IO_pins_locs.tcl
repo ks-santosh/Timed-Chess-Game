@@ -30,13 +30,16 @@ set_location_assignment PIN_AJ21 -to LT24LCDOn
 set_location_assignment PIN_AA16 -to clock
 
 # Set pin location for globalReset
-set_location_assignment PIN_AC12 -to globalReset
+set_location_assignment PIN_AF9 -to globalReset
 
 # Set pin location for resetApp
 set_location_assignment PIN_V16 -to resetApp
 
 # Set pin location for StartStopSwitch
 set_location_assignment PIN_AB12 -to StartStopSwitch
+
+# Set pin location for LockSwitch
+set_location_assignment PIN_AC12 -to LockSwitch
 
 # Set pin location for chess move input keys
 set_location_assignment PIN_Y16 -to KeyLeft
