@@ -33,8 +33,8 @@ reg [2:0] SelectSquareX;
 reg [2:0] SelectSquareY;
 reg [5:0] SelectSquareIdx;
 
-localparam ON = 1'b1;
-localparam OFF = 1'b0;
+localparam ON = 1'b0;
+localparam OFF = 1'b1;
 
 always @ (posedge clock or posedge resetApp) begin
     if (resetApp) begin
