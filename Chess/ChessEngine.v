@@ -159,7 +159,7 @@ localparam MATRIX_WIDTH = CHESS_SQUARES * SQUARE_WIDTH;
 wire [MATRIX_WIDTH - 1:0] ChessMatrix;
 
 ChessLayoutMatrix ChessLayoutMatrix(
-
+	 .clock(clock),
     .KeyLeft(KeyLeft),
     .KeyUp(KeyUp),
     .KeyDown(KeyDown),
