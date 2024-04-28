@@ -56,28 +56,20 @@ always @ (posedge OutClock or posedge resetApp) begin
 		LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		
     end else begin
+		LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
 		
 		if(KeyLeft == ON) begin
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
 			SelectSquareX = SelectSquareX - 1;
-			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end else if(KeyRight == ON) begin
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
 			SelectSquareX = SelectSquareX + 1;
-			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end else if(KeyUp == ON) begin
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
 			SelectSquareY = SelectSquareY - 1;
-			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end else if(KeyDown == ON) begin
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
 			SelectSquareY = SelectSquareY + 1;
-			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
-			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end
+		
+		SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
+		LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		
 		for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
 			FlatLayout[i*SQUARE_WIDTH +: SQUARE_WIDTH] = LayoutMatrix[i];
