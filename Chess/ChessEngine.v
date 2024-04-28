@@ -172,10 +172,6 @@ ChessLayoutMatrix ChessLayoutMatrix(
 localparam START_STATE = 3'd0;
 localparam PLAY_STATE  = 3'd1;
 
-localparam PRESELECT = 2'd1;
-localparam SELECT = 2'd2;
-localparam POSTSELECT = 2'd3;
-
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
 
@@ -191,7 +187,7 @@ function [16:0] ChessPixelIdx;
 		reg [2:0] Chessman;
 		reg ChessmanColour;
 		reg SquareColour;
-		reg [1:0] SelectType;
+		reg [3:0] SelectType;
 		
 		reg [7:0] RelativeX;
 		reg [8:0] RelativeY;
@@ -208,7 +204,7 @@ function [16:0] ChessPixelIdx;
 		
 		Chessman = ChessMatrix[SquareIdx*SQUARE_WIDTH +: 3];
 		ChessmanColour =  ChessMatrix[(SquareIdx+1)*SQUARE_WIDTH - 5];
-		SelectType = ChessMatrix[SquareIdx*SQUARE_WIDTH + 4 +: 2]; 
+		SelectType = ChessMatrix[SquareIdx*SQUARE_WIDTH + 4 +: 4]; 
 		
 		if(State == START_STATE) begin
 			ChessPixelIdx = PixelIdx;
@@ -240,7 +236,11 @@ function [16:0] ChessPixelIdx;
 				
 				end
 				if((RelativeY < 2) || (RelativeY >= SQUARE_SIZE - 2) || (RelativeX < 2) || (RelativeX >= SQUARE_SIZE - 2)) begin
-					if(SelectType == PRESELECT) begin
+					if(SelectType[1]) begin
+						ChessPixelIdx = SELECT_IDX;
+					end else if(SelectType[2]) begin
+						ChessPixelIdx = POSTSELECT_IDX;
+					end else if(SelectType[0]) begin
 						ChessPixelIdx = PRESELECT_IDX;
 					end
 				end else if(Chessman != 0) begin
