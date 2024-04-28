@@ -160,6 +160,7 @@ wire [MATRIX_WIDTH - 1:0] ChessMatrix;
 
 ChessLayoutMatrix ChessLayoutMatrix(
 	 .clock(clock),
+	 .LockSwitch(LockSwitch),
     .KeyLeft(KeyLeft),
     .KeyUp(KeyUp),
     .KeyDown(KeyDown),

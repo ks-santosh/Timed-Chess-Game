@@ -6,6 +6,7 @@ module ChessLayoutMatrix #(
 
    /* INPUTS */
 	 input			clock,
+	 input			LockSwitch,
     input         KeyLeft,
     input         KeyUp,
     input         KeyDown,
@@ -44,6 +45,10 @@ reg [2:0] SelectSquareX;
 reg [2:0] SelectSquareY;
 reg [5:0] SelectSquareIdx;
 
+reg [2:0] LockSquareX;
+reg [2:0] LockSquareY;
+reg [2:0] LockSquareIdx; 
+
 localparam ON = 1'b0;
 localparam OFF = 1'b1;
 
@@ -53,6 +58,10 @@ always @ (posedge OutClock or posedge resetApp) begin
 		SelectSquareX = 3'd2;
 		SelectSquareY = 3'd3;
 		SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
+
+		LockSquareX = 3'd0;
+		LockSquareY = 3'd0;
+
 		LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		
     end else begin
