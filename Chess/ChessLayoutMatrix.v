@@ -51,7 +51,13 @@ always @ (posedge clock or posedge resetApp) begin
 			SelectSquareX = SelectSquareX - 1;
 			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
+		end else if(KeyRight == ON) begin
+			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
+			SelectSquareX = SelectSquareX + 1;
+			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
+			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end
+
 		
 		for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
 			FlatLayout[i*SQUARE_WIDTH +: SQUARE_WIDTH] = LayoutMatrix[i];
