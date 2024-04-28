@@ -61,6 +61,11 @@ always @ (posedge clock or posedge resetApp) begin
 			SelectSquareY = SelectSquareY + 1;
 			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
+		end else if(KeyDown == ON) begin
+			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
+			SelectSquareY = SelectSquareY - 1;
+			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
+			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end
 		
 
