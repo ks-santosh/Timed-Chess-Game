@@ -98,6 +98,7 @@ set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id Chess_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME Chess_tb -section_id Chess_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE simulation/Chess_tb.v -section_id Chess_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE simulation/LT24FunctionalModel.v -section_id Chess_tb
+set_global_assignment -name VERILOG_FILE ClockFrequencyDivider.v
 set_global_assignment -name VERILOG_FILE ChessLayoutMatrix.v
 set_global_assignment -name VERILOG_FILE ChessEngine.v
 set_global_assignment -name VERILOG_FILE UpCounterNbit.v

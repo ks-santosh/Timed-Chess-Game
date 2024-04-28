@@ -29,6 +29,17 @@ initial begin
 	end
 end 
 
+wire OutClock;
+
+ClockFrequencyDivider #(
+	.OUTPUT_FREQUENCY(10)
+) ClockFrequencyDivider (
+
+    .InClock(clock),
+	 .reset(resetApp),
+    .OutClock(OutClock)
+); 
+
 reg [2:0] SelectSquareX; 
 reg [2:0] SelectSquareY;
 reg [5:0] SelectSquareIdx;
@@ -36,7 +47,7 @@ reg [5:0] SelectSquareIdx;
 localparam ON = 1'b0;
 localparam OFF = 1'b1;
 
-always @ (posedge clock or posedge resetApp) begin
+always @ (posedge OutClock or posedge resetApp) begin
     if (resetApp) begin
 		Layout <= InitLayout;
 		SelectSquareX = 3'd2;
@@ -67,8 +78,6 @@ always @ (posedge clock or posedge resetApp) begin
 			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end
-		
-
 		
 		for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
 			FlatLayout[i*SQUARE_WIDTH +: SQUARE_WIDTH] = LayoutMatrix[i];
