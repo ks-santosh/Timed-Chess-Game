@@ -238,8 +238,8 @@ function [16:0] ChessPixelIdx;
 					end
 				
 				end
-				if(SelectType == PRESELECT) begin
-					if((RelativeY < 2) || (RelativeY >= SQUARE_SIZE - 2) || (RelativeX < 2) || (RelativeX >= SQUARE_SIZE - 2)) begin
+				if((RelativeY < 2) || (RelativeY >= SQUARE_SIZE - 2) || (RelativeX < 2) || (RelativeX >= SQUARE_SIZE - 2)) begin
+					if(SelectType == PRESELECT) begin
 						ChessPixelIdx = PRESELECT_IDX;
 					end
 				end else if(Chessman != 0) begin
