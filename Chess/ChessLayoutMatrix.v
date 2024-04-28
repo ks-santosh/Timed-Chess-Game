@@ -69,12 +69,12 @@ always @ (posedge OutClock or posedge resetApp) begin
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end else if(KeyUp == ON) begin
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
-			SelectSquareY = SelectSquareY + 1;
+			SelectSquareY = SelectSquareY - 1;
 			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end else if(KeyDown == ON) begin
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd0;
-			SelectSquareY = SelectSquareY - 1;
+			SelectSquareY = SelectSquareY + 1;
 			SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
 			LayoutMatrix[SelectSquareIdx][7:4] = 4'd1;
 		end
