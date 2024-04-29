@@ -97,6 +97,14 @@ function ValidMove;
 				end
 			end
 			
+			KNIGHT: begin
+				if(((LenSDy == 2) || (LenDSy == 2)) && ((LenSDx == 1) || (LenDSx == 1))) begin
+					ValidMove = TRUE;
+				end else if(((LenSDy == 1) || (LenDSy == 1)) && ((LenSDx == 2) || (LenDSx == 2))) begin
+					ValidMove = TRUE;
+				end
+			end
+			
 			default: begin
 				ValidMove = FALSE;
 			end
