@@ -105,6 +105,12 @@ function ValidMove;
 				end
 			end
 			
+			ROOK: begin
+				if((DestY == SourceY) ^ (DestX == SourceX)) begin
+					ValidMove = TRUE;
+				end
+			end
+			
 			default: begin
 				ValidMove = FALSE;
 			end
