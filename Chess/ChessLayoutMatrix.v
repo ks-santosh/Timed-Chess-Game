@@ -150,7 +150,7 @@ always @ (posedge OutClock or posedge resetApp) begin
 			end
 		end
 		
-		if(!LockSwitch) begin
+		if((!LockSwitch) && (LockFlag)) begin
 			Chessman = LayoutMatrix[LockSquareIdx][2:0];
 			DestX = {1'b0, SelectSquareX};
 			DestY = {1'b0, SelectSquareY};
