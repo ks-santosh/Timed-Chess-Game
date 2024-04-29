@@ -48,11 +48,63 @@ reg [5:0] SelectSquareIdx;
 reg [5:0] LockSquareIdx; 
 reg LockFlag;
 reg Player;
+
 localparam WHITE_PLAYER = 1'b1;
 localparam BLACK_PLAYER = 1'b0;
 
 localparam ON = 1'b0;
 localparam OFF = 1'b1;
+
+localparam TRUE = 1'b1;
+localparam FALSE = 1'b0;
+
+localparam PAWN = 3'd1;
+localparam KNIGHT = 3'd2;
+localparam ROOK = 3'd3;
+localparam BISHOP = 3'd4;
+localparam QUEEN = 3'd5;
+localparam KING = 3'd6;
+
+reg [3:0] SourceX;
+reg [3:0] SourceY;
+reg [3:0] DestX;
+reg [3:0] DestY;
+reg [2:0] Chessman;
+
+function ValidMove;
+	input Player;
+	input [2:0] Chessman;
+	input [3:0] SourceX;
+	input [3:0] SourceY;
+	input [3:0] DestX;
+	input [3:0] DestY;
+	begin
+		reg [3:0] LenSDy, LenDSy, LenSDx, LenDSx;
+		
+		LenSDy = DestY - SourceY;
+		LenDSy = SourceY - DestY;
+		LenSDx = DestX - SourceX;
+		LenDSx = SourceX - DestX;
+
+		ValidMove = FALSE;
+		case (Chessman)
+			PAWN: begin
+				if(Player == WHITE_PLAYER) begin
+					if(DestY == SourceY - 1)
+						ValidMove = TRUE;
+				end else if(DestY == SourceY + 1) begin
+						ValidMove = TRUE;
+				end
+			end
+			
+			default: begin
+				ValidMove = FALSE;
+			end
+			
+		endcase
+	end
+endfunction
+
 
 always @ (posedge OutClock or posedge resetApp) begin
     if (resetApp) begin
@@ -92,11 +144,21 @@ always @ (posedge OutClock or posedge resetApp) begin
 			if((Player == WHITE_PLAYER) && (LayoutMatrix[SelectSquareIdx][3]))begin
 				LockSquareIdx = SelectSquareIdx;
 				LayoutMatrix[LockSquareIdx][5] = 1'b1;
+				SourceX = {1'b0, SelectSquareX};
+				SourceY = {1'b0, SelectSquareY};
 				LockFlag = 1'b1;
 			end
 		end
 		
 		if(!LockSwitch) begin
+			Chessman = LayoutMatrix[LockSquareIdx][2:0];
+			DestX = {1'b0, SelectSquareX};
+			DestY = {1'b0, SelectSquareY};
+			if(ValidMove(Player, Chessman, SourceX, SourceY, DestX, DestY)) begin
+				LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
+				LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
+			end
+
 			LayoutMatrix[LockSquareIdx][5] = 1'b0;
 			LockFlag = 1'b0;
 		end
