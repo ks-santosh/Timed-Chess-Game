@@ -117,6 +117,14 @@ function ValidMove;
 				end
 			end			
 			
+			QUEEN: begin
+				if((LenSDx == LenSDy) || (LenSDx == LenDSy) || (LenDSx == LenSDy) || (LenSDx == LenDSy)) begin
+					ValidMove = TRUE;
+				end else if((DestY == SourceY) ^ (DestX == SourceX)) begin
+					ValidMove = TRUE;
+				end
+			end
+
 			default: begin
 				ValidMove = FALSE;
 			end
