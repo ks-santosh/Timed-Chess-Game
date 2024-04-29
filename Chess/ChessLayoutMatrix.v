@@ -111,6 +111,12 @@ function ValidMove;
 				end
 			end
 			
+			BISHOP: begin
+				if((LenSDx == LenSDy) || (LenSDx == LenDSy) || (LenDSx == LenSDy) || (LenSDx == LenDSy)) begin
+					ValidMove = TRUE;
+				end
+			end			
+			
 			default: begin
 				ValidMove = FALSE;
 			end
