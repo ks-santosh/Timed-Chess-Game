@@ -125,6 +125,12 @@ function ValidMove;
 				end
 			end
 
+			KING: begin
+				if((LenSDx == 1) || (LenDSx == 1) || (LenSDy == 1) || (LenDSy == 1)) begin
+					ValidMove = TRUE;
+				end
+			end
+			
 			default: begin
 				ValidMove = FALSE;
 			end
