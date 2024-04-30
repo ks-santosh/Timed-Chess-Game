@@ -156,9 +156,9 @@ function ValidMove;
 		case (Chessman)
 			PAWN: begin
 				if(Player == WHITE_PLAYER) begin
-					if(DestY == SourceY - 1)
+					if((DestY == SourceY - 1) || (DestY == 4'd4))
 						ValidMove = TRUE;
-				end else if(DestY == SourceY + 1) begin
+				end else if((DestY == SourceY + 1) || (DestY == 4'd3))begin
 						ValidMove = TRUE;
 				end
 			end
@@ -267,7 +267,7 @@ always @ (posedge OutClock or posedge resetApp) begin
 					if(!ChessmanInPath(SourceX, SourceY, DestX, DestY)) begin
 						LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
 						LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
-						Player = Player;
+						Player = ~Player;
 					end
 				end
 			end
