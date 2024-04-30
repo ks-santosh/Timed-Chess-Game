@@ -101,7 +101,17 @@ function ChessmanInPath;
 						ChessmanInPath = TRUE;
 					end
 				end
-			end	
+			end
+		// If path is horizontal
+		end else if((SourceY == DestY) && (SourceX != DestX)) begin
+			for(x = 0; x < 8; x = x + 1) begin
+				SquareIdx = SourceY*8 + x;
+				if(((x > SourceX) || (x > DestX)) && ((x < SourceX) || (x < DestX))) begin
+					if(LayoutMatrix[SquareIdx][2:0]) begin
+						ChessmanInPath = TRUE;
+					end
+				end
+			end
 		end
 	end
 endfunction
