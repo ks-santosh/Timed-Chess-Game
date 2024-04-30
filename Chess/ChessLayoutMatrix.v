@@ -140,6 +140,7 @@ endfunction
 function ValidMove;
 	input Player;
 	input [2:0] Chessman;
+	input [2:0] TargetChessman;
 	input [3:0] SourceX;
 	input [3:0] SourceY;
 	input [3:0] DestX;
@@ -156,12 +157,20 @@ function ValidMove;
 		case (Chessman)
 			PAWN: begin
 				if(Player == WHITE_PLAYER) begin
-					if((DestY == SourceY - 1) || (DestY == 4'd4))
+					if(((DestY == SourceY - 1) && (DestX == SourceX)) || (DestY == 4'd4)) begin
 						ValidMove = TRUE;
-				end else if((DestY == SourceY + 1) || (DestY == 4'd3))begin
+					end else if((DestY == SourceY - 1) && ((DestX == SourceX - 1) || (DestX == SourceX + 1))
+									&& (TargetChessman != 3'd0)) begin
+						ValidMove = TRUE;									
+					end
+				end else 
+					if(((DestY == SourceY + 1)  && (DestX == SourceX))|| (DestY == 4'd3))begin
 						ValidMove = TRUE;
+					end else if((DestY == SourceY + 1) && ((DestX == SourceX - 1) || (DestX == SourceX + 1))
+									&& (TargetChessman != 3'd0)) begin
+						ValidMove = TRUE;									
+					end
 				end
-			end
 			
 			KNIGHT: begin
 				if(((LenSDy == 2) || (LenDSy == 2)) && ((LenSDx == 1) || (LenDSx == 1))) begin
@@ -263,7 +272,7 @@ always @ (posedge OutClock or posedge resetApp) begin
 			
 			// If the chessman to be captured is different colour
 			if((LayoutMatrix[LockSquareIdx][3] != LayoutMatrix[SelectSquareIdx][3]) || (LayoutMatrix[SelectSquareIdx][2:0] == 3'd0)) begin
-				if(ValidMove(Player, Chessman, SourceX, SourceY, DestX, DestY)) begin
+				if(ValidMove(Player, Chessman, LayoutMatrix[SelectSquareIdx][2:0], SourceX, SourceY, DestX, DestY)) begin
 					if(!ChessmanInPath(SourceX, SourceY, DestX, DestY)) begin
 						LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
 						LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
