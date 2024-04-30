@@ -112,6 +112,27 @@ function ChessmanInPath;
 					end
 				end
 			end
+		// If path is diagonal
+		end else if((LenSDx == LenSDy) || (LenSDx == LenDSy) || (LenDSx == LenSDy) || (LenSDx == LenDSy)) begin
+			for(y = 0; y < 8; y = y + 1) begin
+				for(x = 0; x < 8; x = x + 1) begin
+					SquareIdx = y*8 + x;
+					// If the square in the range
+					if ((((x > SourceX) || (x > DestX)) && ((x < SourceX) || (x < DestX)))
+						&& (((y > SourceY) || (y > DestY)) && ((y < SourceY) || (y < DestY)))) begin
+						// If square is diagonal to the source
+						LenSDy = y - SourceY;
+						LenDSy = SourceY - y;
+						LenSDx = x - SourceX;
+						LenDSx = SourceX - x;
+						if((LenSDx == LenSDy) || (LenSDx == LenDSy) || (LenDSx == LenSDy) || (LenSDx == LenDSy)) begin
+							if(LayoutMatrix[SquareIdx][2:0]) begin
+								ChessmanInPath = TRUE;
+							end
+						end
+					end
+				end
+			end
 		end
 	end
 endfunction
