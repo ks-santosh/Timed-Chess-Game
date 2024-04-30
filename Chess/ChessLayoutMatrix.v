@@ -71,6 +71,41 @@ reg [3:0] DestX;
 reg [3:0] DestY;
 reg [2:0] Chessman;
 
+function ChessmanInPath;
+	input [3:0] SourceX;
+	input [3:0] SourceY;
+	input [3:0] DestX;
+	input [3:0] DestY;	
+	begin
+		reg [5:0] SquareIdx;
+		reg [3:0] x, y;
+		
+		reg [3:0] LenSDy, LenDSy, LenSDx, LenDSx;
+		
+		LenSDy = DestY - SourceY;
+		LenDSy = SourceY - DestY;
+		LenSDx = DestX - SourceX;
+		LenDSx = SourceX - DestX;
+		
+		ChessmanInPath = FALSE;
+		
+		// If destination is adjacent
+		if((LenSDx == 1) || (LenDSx == 1) || (LenSDy == 1) || (LenDSy == 1)) begin
+					ChessmanInPath = FALSE;
+		// if path is vertical
+		end else if((SourceX == DestX) && (SourceY != DestY)) begin
+			for(y = 0; y < 8; y = y + 1) begin
+				SquareIdx = y*8 + SourceX;
+				if(((y > SourceY) || (y > DestY)) && ((y < SourceY) || (y < DestY))) begin
+					if(LayoutMatrix[SquareIdx][2:0]) begin
+						ChessmanInPath = TRUE;
+					end
+				end
+			end	
+		end
+	end
+endfunction
+
 function ValidMove;
 	input Player;
 	input [2:0] Chessman;
@@ -198,9 +233,11 @@ always @ (posedge OutClock or posedge resetApp) begin
 			// If the chessman to be captured is different colour
 			if((LayoutMatrix[LockSquareIdx][3] != LayoutMatrix[SelectSquareIdx][3]) || (LayoutMatrix[SelectSquareIdx][2:0] == 3'd0)) begin
 				if(ValidMove(Player, Chessman, SourceX, SourceY, DestX, DestY)) begin
-					LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
-					LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
-					Player = ~ Player;
+					if(!ChessmanInPath(SourceX, SourceY, DestX, DestY)) begin
+						LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
+						LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
+						Player = Player;
+					end
 				end
 			end
 
