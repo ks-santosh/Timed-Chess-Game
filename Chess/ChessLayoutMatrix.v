@@ -188,9 +188,13 @@ always @ (posedge OutClock or posedge resetApp) begin
 			Chessman = LayoutMatrix[LockSquareIdx][2:0];
 			DestX = {1'b0, SelectSquareX};
 			DestY = {1'b0, SelectSquareY};
-			if(ValidMove(Player, Chessman, SourceX, SourceY, DestX, DestY)) begin
-				LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
-				LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
+			
+			// If the chessman to be captured is different colour
+			if(LayoutMatrix[LockSquareIdx][3] != LayoutMatrix[SelectSquareIdx][3]) begin
+				if(ValidMove(Player, Chessman, SourceX, SourceY, DestX, DestY)) begin
+					LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
+					LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
+				end
 			end
 
 			LayoutMatrix[LockSquareIdx][5] = 1'b0;
