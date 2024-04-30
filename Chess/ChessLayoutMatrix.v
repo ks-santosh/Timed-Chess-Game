@@ -181,7 +181,13 @@ always @ (posedge OutClock or posedge resetApp) begin
 				SourceX = {1'b0, SelectSquareX};
 				SourceY = {1'b0, SelectSquareY};
 				LockFlag = 1'b1;
-			end
+			end else if((Player == BLACK_PLAYER) && (!LayoutMatrix[SelectSquareIdx][3]))begin
+				LockSquareIdx = SelectSquareIdx;
+				LayoutMatrix[LockSquareIdx][5] = 1'b1;
+				SourceX = {1'b0, SelectSquareX};
+				SourceY = {1'b0, SelectSquareY};
+				LockFlag = 1'b1;
+			end 
 		end
 		
 		if((!LockSwitch) && (LockFlag)) begin
@@ -194,6 +200,7 @@ always @ (posedge OutClock or posedge resetApp) begin
 				if(ValidMove(Player, Chessman, SourceX, SourceY, DestX, DestY)) begin
 					LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
 					LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
+					Player = ~ Player;
 				end
 			end
 
