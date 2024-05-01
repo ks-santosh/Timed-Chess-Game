@@ -18,7 +18,11 @@ module Chess (
     output        LT24Reset_n,
     output [15:0] LT24Data,
     output        LT24LCDOn,
-    output        resetApp
+    output        resetApp,
+	 output [ 6:0] WhiteClockMins,
+	 output [ 6:0] WhiteClockTensSec,
+	 output [ 6:0] WhiteClockUnitsSec
+
 ); 
 
 ChessEngine ChessEngine (
@@ -42,7 +46,10 @@ ChessEngine ChessEngine (
     .LT24RS      (LT24RS     ),
     .LT24Reset_n (LT24Reset_n),
     .LT24Data    (LT24Data   ),
-    .LT24LCDOn   (LT24LCDOn  )
+    .LT24LCDOn   (LT24LCDOn  ),
+	 .WhiteClockMins (WhiteClockMins),
+	 .WhiteClockTensSec (WhiteClockTensSec),
+	 .WhiteClockUnitsSec (WhiteClockUnitsSec)
 );
 
 

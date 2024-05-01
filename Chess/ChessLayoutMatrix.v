@@ -14,7 +14,8 @@ module ChessLayoutMatrix #(
 	 input         resetApp,
     
    /* OUTPUTS */
-    output reg [MATRIX_WIDTH - 1:0]	Layout
+    output reg [MATRIX_WIDTH - 1:0]	Layout,
+	 output reg Player
 );
 
 reg [SQUARE_WIDTH - 1:0] LayoutMatrix [0:CHESS_SQUARES - 1];
@@ -47,7 +48,6 @@ reg [5:0] SelectSquareIdx;
 
 reg [5:0] LockSquareIdx; 
 reg LockFlag;
-reg Player;
 
 localparam WHITE_PLAYER = 1'b1;
 localparam BLACK_PLAYER = 1'b0;

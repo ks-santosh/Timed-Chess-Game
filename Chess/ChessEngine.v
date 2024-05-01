@@ -18,7 +18,10 @@ module ChessEngine (
     output        LT24Reset_n,
     output [15:0] LT24Data,
     output        LT24LCDOn,
-    output        resetApp
+    output        resetApp,
+	 output [ 6:0] WhiteClockMins,
+	 output [ 6:0] WhiteClockTensSec,
+	 output [ 6:0] WhiteClockUnitsSec
 );
 
 // LCD
@@ -157,6 +160,7 @@ localparam SQUARE_WIDTH  =  8;
 localparam MATRIX_WIDTH = CHESS_SQUARES * SQUARE_WIDTH;
 
 wire [MATRIX_WIDTH - 1:0] ChessMatrix;
+wire Player;
 
 ChessLayoutMatrix ChessLayoutMatrix(
 	 .clock(clock),
@@ -166,7 +170,17 @@ ChessLayoutMatrix ChessLayoutMatrix(
     .KeyDown(KeyDown),
     .KeyRight(KeyRight),
 	 .resetApp(resetApp),
-    .Layout(ChessMatrix)
+    .Layout(ChessMatrix),
+	 .Player(Player)
+);
+
+CountdownTimer WhiteTimer(
+	.clock(clock),
+	.reset(resetApp),
+	.flag(Player),
+	.SegMins		(WhiteClockMins    ),
+	.SegSecTens (WhiteClockTensSec ),
+	.SegSecUnits(WhiteClockUnitsSec)	
 );
 
 localparam START_STATE = 3'd0;
