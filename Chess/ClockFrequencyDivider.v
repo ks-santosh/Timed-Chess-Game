@@ -2,7 +2,7 @@ module ClockFrequencyDivider #(
 	parameter INPUT_FREQUENCY = 50000000,
 	parameter FREQUENCY_WIDTH = 26,
 	parameter OUTPUT_FREQUENCY = 1,
-	parameter COUNT_MAX = INPUT_FREQUENCY/OUTPUT_FREQUENCY
+	parameter COUNT_MAX = (INPUT_FREQUENCY/OUTPUT_FREQUENCY)/2
 ) (
 
    /* INPUTS */
