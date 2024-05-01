@@ -15,7 +15,8 @@ module ChessLayoutMatrix #(
     
    /* OUTPUTS */
     output reg [MATRIX_WIDTH - 1:0]	Layout,
-	 output reg Player
+	 output reg Player,
+	 output reg [1:0] Checkmate
 );
 
 reg [SQUARE_WIDTH - 1:0] LayoutMatrix [0:CHESS_SQUARES - 1];
@@ -223,10 +224,12 @@ always @ (posedge OutClock or posedge resetApp) begin
 		SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
 		LockSquareIdx = SelectSquareIdx;
 
-		Player = 1'b1; // 1 - White 0 - Black player
+		Player <= 1'b1; // 1 - White 0 - Black player
 		LockFlag = 1'b0;
 		
-		LayoutMatrix[SelectSquareIdx][4] = 1'b1;		
+		LayoutMatrix[SelectSquareIdx][4] = 1'b1;
+
+		Checkmate <= 2'd0;
     end else begin
 		
 		LayoutMatrix[SelectSquareIdx][4] = 1'b0;
@@ -274,9 +277,14 @@ always @ (posedge OutClock or posedge resetApp) begin
 			if((LayoutMatrix[LockSquareIdx][3] != LayoutMatrix[SelectSquareIdx][3]) || (LayoutMatrix[SelectSquareIdx][2:0] == 3'd0)) begin
 				if(ValidMove(Player, Chessman, LayoutMatrix[SelectSquareIdx][2:0], SourceX, SourceY, DestX, DestY)) begin
 					if(!ChessmanInPath(SourceX, SourceY, DestX, DestY)) begin
-						LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
-						LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
-						Player = ~Player;
+						if(LayoutMatrix[SelectSquareIdx][3] == KING) begin
+							Checkmate[0] <= 1;
+							Checkmate[1] <= Player;
+						end else begin
+							LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
+							LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
+							Player <= ~Player;
+						begin
 					end
 				end
 			end
