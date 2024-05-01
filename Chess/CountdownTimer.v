@@ -20,9 +20,26 @@ ClockFrequencyDivider #(
    .OutClock(OutClock)
 ); 
 	
-reg [9:0] SecondsLeft;
-reg [6:0] Minutes;
-reg [6:0] Seconds;
+	reg [9:0] SecondsLeft;
+	reg [6:0] Minutes;
+	reg [6:0] Seconds, SecondsTens, SecondsUnits;
+
+    // Instantiate seven-segment decoder modules
+    SevenSegmentDisplay DisplayMins(
+        .DecimalDigit(Minutes),
+        .SegOutput(SegMins)
+    );
+
+    SevenSegmentDisplay DisplaySecTens(
+        .DecimalDigit(SecondsTens),
+        .SegOutput(SegSecTens)
+    );
+
+    SevenSegmentDisplay DisplaySecUnits(
+        .DecimalDigit(SecondsUnits),
+        .SegOutput(SegSecUnits)
+    );
+
 
     always @(posedge OutClock or posedge reset) begin
         if (reset) begin
@@ -30,18 +47,16 @@ reg [6:0] Seconds;
 				SecondsLeft <= TOTAL_SECONDS;
             Minutes <= MINUTES;  // Reset minutes
             Seconds <= SECONDS;  // Reset seconds
-				SegMins <= MINUTES;
-				SegSecTens <= SECONDS/10;
-				SegSecUnits <= SECONDS % 10;
+				SecondsTens <= SECONDS/10;
+				SecondsUnits <= SECONDS % 10;
         end else if (flag) begin
 				// Countdown logic when flag is high
 				SecondsLeft <= SecondsLeft - 1;
 				Minutes <= SecondsLeft/60;
 				Seconds <= SecondsLeft - (Minutes * 60);
 				
-				SegMins <= Minutes;
-				SegSecTens <= Seconds/10;
-				SegSecUnits <= Seconds % 10;
+				SecondsTens <= Seconds/10;
+				SecondsUnits <= Seconds % 10;
 		  end
     end
 	 
