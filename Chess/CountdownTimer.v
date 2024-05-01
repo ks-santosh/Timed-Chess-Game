@@ -1,8 +1,7 @@
 module CountdownTimer #( 
-	parameter MINUTES = 5;
-	parameter SECONDS = 0;
-	parameter TOTAL_SECONDS = MINUTES*60 + SECONDS;
-)(
+	parameter MINUTES = 5,
+	parameter SECONDS = 0
+) (
     input clock,  // Clock input
     input reset,  // Asynchronous reset input
     input flag,  // Start/pause control signal
@@ -20,9 +19,10 @@ ClockFrequencyDivider #(
    .OutClock(OutClock)
 ); 
 	
-	reg [9:0] SecondsLeft;
 	reg [6:0] Minutes;
-	reg [6:0] Seconds, SecondsTens, SecondsUnits;
+	reg [6:0] Seconds;
+	reg [6:0] SecondsTens; 
+	reg [6:0] SecondsUnits;
 
     // Instantiate seven-segment decoder modules
     SevenSegmentDisplay DisplayMins(
@@ -44,16 +44,18 @@ ClockFrequencyDivider #(
     always @(posedge OutClock or posedge reset) begin
         if (reset) begin
             // Asynchronous reset logic
-				SecondsLeft <= TOTAL_SECONDS;
             Minutes <= MINUTES;  // Reset minutes
             Seconds <= SECONDS;  // Reset seconds
 				SecondsTens <= SECONDS/10;
 				SecondsUnits <= SECONDS % 10;
         end else if (flag) begin
 				// Countdown logic when flag is high
-				SecondsLeft <= SecondsLeft - 1;
-				Minutes <= SecondsLeft/60;
-				Seconds <= SecondsLeft - (Minutes * 60);
+				if(Seconds == 0) begin
+					Minutes <= Minutes - 1;
+					Seconds <= 7'd59;
+				end else begin
+					Seconds <= Seconds - 1;
+				end
 				
 				SecondsTens <= Seconds/10;
 				SecondsUnits <= Seconds % 10;
