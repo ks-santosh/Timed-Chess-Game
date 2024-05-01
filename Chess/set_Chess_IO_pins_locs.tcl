@@ -47,5 +47,30 @@ set_location_assignment PIN_W15 -to KeyUp
 set_location_assignment PIN_AA15 -to KeyDown
 set_location_assignment PIN_AA14 -to KeyRight
 
+# Set seven segment displays for chess timer for White Player
+set_location_assignment PIN_AE26 -to WhiteClockUnitsSec[0]
+set_location_assignment PIN_AE27 -to WhiteClockUnitsSec[1]
+set_location_assignment PIN_AE28 -to WhiteClockUnitsSec[2]
+set_location_assignment PIN_AG27 -to WhiteClockUnitsSec[3]
+set_location_assignment PIN_AF28 -to WhiteClockUnitsSec[4]
+set_location_assignment PIN_AG28 -to WhiteClockUnitsSec[5]
+set_location_assignment PIN_AH28 -to WhiteClockUnitsSec[6]
+
+set_location_assignment PIN_AJ29 -to WhiteClockTensSec[0]
+set_location_assignment PIN_AH29 -to WhiteClockTensSec[1]
+set_location_assignment PIN_AH30 -to WhiteClockTensSec[2]
+set_location_assignment PIN_AG30 -to WhiteClockTensSec[3]
+set_location_assignment PIN_AF29 -to WhiteClockTensSec[4]
+set_location_assignment PIN_AF30 -to WhiteClockTensSec[5]
+set_location_assignment PIN_AD27 -to WhiteClockTensSec[6]
+	
+set_location_assignment PIN_AB23 -to WhiteClockMins[0]
+set_location_assignment PIN_AE29 -to WhiteClockMins[1]
+set_location_assignment PIN_AD29 -to WhiteClockMins[2]
+set_location_assignment PIN_AC28 -to WhiteClockMins[3]
+set_location_assignment PIN_AD30 -to WhiteClockMins[4]
+set_location_assignment PIN_AC29 -to WhiteClockMins[5]
+set_location_assignment PIN_AC30 -to WhiteClockMins[6]
+
 # Commit assignments
 export_assignments

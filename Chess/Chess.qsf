@@ -98,6 +98,9 @@ set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id Chess_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME Chess_tb -section_id Chess_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE simulation/Chess_tb.v -section_id Chess_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE simulation/LT24FunctionalModel.v -section_id Chess_tb
+set_location_assignment PIN_AC12 -to LockSwitch
+set_global_assignment -name VERILOG_FILE SevenSegmentDisplay.v
+set_global_assignment -name VERILOG_FILE CountdownTimer.v
 set_global_assignment -name VERILOG_FILE ClockFrequencyDivider.v
 set_global_assignment -name VERILOG_FILE ChessLayoutMatrix.v
 set_global_assignment -name VERILOG_FILE ChessEngine.v
@@ -105,5 +108,25 @@ set_global_assignment -name VERILOG_FILE UpCounterNbit.v
 set_global_assignment -name VERILOG_FILE LT24Display.v
 set_global_assignment -name VERILOG_FILE Chess.v
 set_global_assignment -name CDF_FILE Chess.cdf
-set_location_assignment PIN_AC12 -to LockSwitch
+set_location_assignment PIN_AE26 -to WhiteClockUnitsSec[0]
+set_location_assignment PIN_AE27 -to WhiteClockUnitsSec[1]
+set_location_assignment PIN_AE28 -to WhiteClockUnitsSec[2]
+set_location_assignment PIN_AG27 -to WhiteClockUnitsSec[3]
+set_location_assignment PIN_AF28 -to WhiteClockUnitsSec[4]
+set_location_assignment PIN_AG28 -to WhiteClockUnitsSec[5]
+set_location_assignment PIN_AH28 -to WhiteClockUnitsSec[6]
+set_location_assignment PIN_AJ29 -to WhiteClockTensSec[0]
+set_location_assignment PIN_AH29 -to WhiteClockTensSec[1]
+set_location_assignment PIN_AH30 -to WhiteClockTensSec[2]
+set_location_assignment PIN_AG30 -to WhiteClockTensSec[3]
+set_location_assignment PIN_AF29 -to WhiteClockTensSec[4]
+set_location_assignment PIN_AF30 -to WhiteClockTensSec[5]
+set_location_assignment PIN_AD27 -to WhiteClockTensSec[6]
+set_location_assignment PIN_AB23 -to WhiteClockMins[0]
+set_location_assignment PIN_AE29 -to WhiteClockMins[1]
+set_location_assignment PIN_AD29 -to WhiteClockMins[2]
+set_location_assignment PIN_AC28 -to WhiteClockMins[3]
+set_location_assignment PIN_AD30 -to WhiteClockMins[4]
+set_location_assignment PIN_AC29 -to WhiteClockMins[5]
+set_location_assignment PIN_AC30 -to WhiteClockMins[6]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
