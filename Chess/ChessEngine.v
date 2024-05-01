@@ -21,7 +21,11 @@ module ChessEngine (
     output        resetApp,
 	 output [ 6:0] WhiteClockMins,
 	 output [ 6:0] WhiteClockTensSec,
-	 output [ 6:0] WhiteClockUnitsSec
+	 output [ 6:0] WhiteClockUnitsSec,
+ 	 output [ 6:0] BlackClockMins,
+	 output [ 6:0] BlackClockTensSec,
+	 output [ 6:0] BlackClockUnitsSec
+	 
 );
 
 // LCD
@@ -181,6 +185,15 @@ CountdownTimer WhiteTimer(
 	.SegMins		(WhiteClockMins    ),
 	.SegSecTens (WhiteClockTensSec ),
 	.SegSecUnits(WhiteClockUnitsSec)	
+);
+
+CountdownTimer BlackTimer(
+	.clock(clock),
+	.reset(resetApp),
+	.flag(~Player),
+	.SegMins		(BlackClockMins    ),
+	.SegSecTens (BlackClockTensSec ),
+	.SegSecUnits(BlackClockUnitsSec)	
 );
 
 localparam START_STATE = 3'd0;

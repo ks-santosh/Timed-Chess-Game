@@ -21,8 +21,10 @@ module Chess (
     output        resetApp,
 	 output [ 6:0] WhiteClockMins,
 	 output [ 6:0] WhiteClockTensSec,
-	 output [ 6:0] WhiteClockUnitsSec
-
+	 output [ 6:0] WhiteClockUnitsSec,
+	 output [ 6:0] BlackClockMins,
+	 output [ 6:0] BlackClockTensSec,
+	 output [ 6:0] BlackClockUnitsSec
 ); 
 
 ChessEngine ChessEngine (
@@ -49,7 +51,10 @@ ChessEngine ChessEngine (
     .LT24LCDOn   (LT24LCDOn  ),
 	 .WhiteClockMins (WhiteClockMins),
 	 .WhiteClockTensSec (WhiteClockTensSec),
-	 .WhiteClockUnitsSec (WhiteClockUnitsSec)
+	 .WhiteClockUnitsSec (WhiteClockUnitsSec),
+	 .BlackClockMins (BlackClockMins),
+	 .BlackClockTensSec (BlackClockTensSec),
+	 .BlackClockUnitsSec (BlackClockUnitsSec)
 );
 
 
