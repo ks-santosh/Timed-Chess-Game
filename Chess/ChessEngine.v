@@ -26,12 +26,12 @@ localparam LCD_WIDTH  = 240;
 localparam LCD_HEIGHT = 320;
 localparam LCD_SIZE   = LCD_WIDTH * LCD_HEIGHT;
 
-// clock banner
-localparam CLOCK_HEIGHT = 40;
-localparam CLOCK_SIZE = CLOCK_HEIGHT * LCD_WIDTH;
+// Banner
+localparam BANNER_HEIGHT = 40;
+localparam BANNER_SIZE = BANNER_HEIGHT * LCD_WIDTH;
 
 // chess pieces
-localparam DARK_CHESSMEN_START = LCD_SIZE + CLOCK_SIZE;
+localparam DARK_CHESSMEN_START = LCD_SIZE + BANNER_SIZE;
 localparam SQUARE_SIZE = 30;
 localparam CHESSMEN_SIZE = SQUARE_SIZE*SQUARE_SIZE*6*2;
 localparam LIGHT_CHESSMEN_START = DARK_CHESSMEN_START + CHESSMEN_SIZE;
@@ -57,7 +57,7 @@ reg [15:0] SpriteSheet [0:SHEET_SIZE];
 
 initial begin
     $readmemh("MemInitFiles/StartScreenImg.hex", SpriteSheet, 0, LCD_SIZE-1);
-	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, LCD_SIZE + CLOCK_SIZE - 1);
+	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, LCD_SIZE + BANNER_SIZE - 1);
 	 $readmemh("MemInitFiles/DarkChessmen.hex", SpriteSheet, DARK_CHESSMEN_START, DARK_CHESSMEN_START + CHESSMEN_SIZE - 1);
 	 $readmemh("MemInitFiles/LightChessmen.hex", SpriteSheet, LIGHT_CHESSMEN_START, LIGHT_CHESSMEN_START + CHESSMEN_SIZE - 1);
 
@@ -197,9 +197,9 @@ function [16:0] ChessPixelIdx;
 		ChessPixelIdx = PixelIdx;
 		
 		XQuotient = x / SQUARE_SIZE;
-		YQuotient = (y - CLOCK_HEIGHT) / SQUARE_SIZE;
+		YQuotient = (y - BANNER_HEIGHT) / SQUARE_SIZE;
 		SquareIdx =	(YQuotient * 8) + XQuotient;
-		RelativeY = y - CLOCK_HEIGHT - SQUARE_SIZE*YQuotient;
+		RelativeY = y - BANNER_HEIGHT - SQUARE_SIZE*YQuotient;
 		RelativeX = x - SQUARE_SIZE*XQuotient;
 		
 		Chessman = ChessMatrix[SquareIdx*SQUARE_WIDTH +: 3];
@@ -209,7 +209,7 @@ function [16:0] ChessPixelIdx;
 		if(State == START_STATE) begin
 			ChessPixelIdx = PixelIdx;
 		end else begin
-			if((y < CLOCK_HEIGHT) || (y >= LCD_HEIGHT - CLOCK_HEIGHT))begin
+			if((y < BANNER_HEIGHT) || (y >= LCD_HEIGHT - BANNER_HEIGHT))begin
 				ChessPixelIdx = PixelIdx;
 			
 			end else begin
