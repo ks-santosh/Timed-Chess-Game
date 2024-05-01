@@ -209,11 +209,8 @@ function [16:0] ChessPixelIdx;
 		if(State == START_STATE) begin
 			ChessPixelIdx = PixelIdx;
 		end else begin
-			if(y < CLOCK_HEIGHT) begin
-				ChessPixelIdx = PixelIdx + LCD_SIZE;
-			
-			end else if (y >= LCD_HEIGHT - CLOCK_HEIGHT) begin
-				ChessPixelIdx = LCD_WIDTH*(CLOCK_HEIGHT - (y - (LCD_HEIGHT - CLOCK_HEIGHT))) - x + LCD_SIZE;
+			if((y < CLOCK_HEIGHT) || (y >= LCD_HEIGHT - CLOCK_HEIGHT))begin
+				ChessPixelIdx = PixelIdx;
 			
 			end else begin
 				if (YQuotient % 2 == 0) begin
