@@ -178,13 +178,17 @@ ChessLayoutMatrix ChessLayoutMatrix(
 	 .Player(Player)
 );
 
+wire WhiteTimeout;
+wire BlackTimeout;
+
 CountdownTimer WhiteTimer(
 	.clock(clock),
 	.reset(resetApp),
 	.flag(Player),
 	.SegMins		(WhiteClockMins    ),
 	.SegSecTens (WhiteClockTensSec ),
-	.SegSecUnits(WhiteClockUnitsSec)	
+	.SegSecUnits(WhiteClockUnitsSec),
+	.Timeout (WhiteTimeout)
 );
 
 CountdownTimer BlackTimer(
@@ -193,7 +197,8 @@ CountdownTimer BlackTimer(
 	.flag(~Player),
 	.SegMins		(BlackClockMins    ),
 	.SegSecTens (BlackClockTensSec ),
-	.SegSecUnits(BlackClockUnitsSec)	
+	.SegSecUnits(BlackClockUnitsSec),
+	.Timeout (BlackTimeout)
 );
 
 localparam START_STATE = 3'd0;

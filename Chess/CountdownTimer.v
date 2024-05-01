@@ -7,7 +7,8 @@ module CountdownTimer #(
     input flag,  // Start/pause control signal
     output [6:0] SegMins,  // Seven-segment display output for minutes
     output [6:0] SegSecTens,  // Seven-segment display output for tens of seconds
-    output [6:0] SegSecUnits  // Seven-segment display output for units of seconds
+    output [6:0] SegSecUnits,  // Seven-segment display output for units of seconds
+	 output reg Timeout
 );
 
 ClockFrequencyDivider #(
@@ -48,9 +49,12 @@ ClockFrequencyDivider #(
             Seconds <= SECONDS;  // Reset seconds
 				SecondsTens <= SECONDS/10;
 				SecondsUnits <= SECONDS % 10;
+				Timeout <= 1'b0;
         end else if (flag) begin
 				// Countdown logic when flag is high
-				if(Seconds == 0) begin
+				if((Seconds == 0) && (Minutes == 0)) begin
+					Timeout <= 1'b1;
+				end if(Seconds == 0) begin
 					Minutes <= Minutes - 1;
 					Seconds <= 7'd59;
 				end else begin
