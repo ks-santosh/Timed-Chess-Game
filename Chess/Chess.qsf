@@ -82,7 +82,7 @@ set_location_assignment PIN_AH18 -to LT24Rd_n
 set_location_assignment PIN_AH17 -to LT24Wr_n
 set_location_assignment PIN_AJ21 -to LT24LCDOn
 set_location_assignment PIN_AA16 -to clock
-set_location_assignment PIN_AF9 -to globalReset
+set_location_assignment PIN_AE12 -to globalReset
 set_location_assignment PIN_V16 -to resetApp
 set_location_assignment PIN_AB12 -to StartStopSwitch
 set_location_assignment PIN_Y16 -to KeyLeft
@@ -150,4 +150,5 @@ set_location_assignment PIN_AB27 -to BlackClockMins[3]
 set_location_assignment PIN_AB26 -to BlackClockMins[4]
 set_location_assignment PIN_AA26 -to BlackClockMins[5]
 set_location_assignment PIN_AA25 -to BlackClockMins[6]
+set_location_assignment PIN_AF9 -to TimerSwitch
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
