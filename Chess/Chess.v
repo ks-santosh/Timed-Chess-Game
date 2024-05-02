@@ -4,6 +4,7 @@ module Chess (
     input         clock,
     input         globalReset,
     input         StartStopSwitch,
+	 input			TimerSwitch,
     input         LockSwitch,
     input         KeyLeft,
     input         KeyUp,
@@ -34,6 +35,7 @@ ChessEngine ChessEngine (
     
 	 .StartStopSwitch (StartStopSwitch),
 	 .LockSwitch (LockSwitch),
+	 .TimerSwitch(TimerSwitch),
 	 .KeyLeft (KeyLeft),
 	 .KeyUp (KeyUp),
 	 .KeyDown (KeyDown),

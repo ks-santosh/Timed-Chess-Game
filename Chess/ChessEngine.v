@@ -4,6 +4,7 @@ module ChessEngine (
     input         clock,
     input         globalReset,
     input         StartStopSwitch,
+	 input			TimerSwitch,
     input         LockSwitch,
     input         KeyLeft,
     input         KeyUp,
@@ -199,8 +200,8 @@ wire BlackTimeout;
 wire WhiteTimerFlag;
 wire BlackTimerFlag;
 
-assign WhiteTimerFlag = Player & (~Checkmate[0]) & (~BlackTimeout) & State[1];
-assign BlackTimerFlag = (~Player) & (~Checkmate[0]) & (~WhiteTimeout) & State[1];
+assign WhiteTimerFlag = Player & (~Checkmate[0]) & (~BlackTimeout) & State[1] & TimerSwitch;
+assign BlackTimerFlag = (~Player) & (~Checkmate[0]) & (~WhiteTimeout) & State[1] & TimerSwitch;
 
 CountdownTimer WhiteTimer(
 	.clock(clock),
