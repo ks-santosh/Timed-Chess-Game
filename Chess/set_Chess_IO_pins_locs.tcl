@@ -29,16 +29,16 @@ set_location_assignment PIN_AJ21 -to LT24LCDOn
 # Set pin location for Clock
 set_location_assignment PIN_AA16 -to clock
 
-# Set pin location for globalReset
-set_location_assignment PIN_AF9 -to globalReset
+# Set pin location for globalReset SW[9]
+set_location_assignment PIN_AE12 -to globalReset
 
 # Set pin location for resetApp
 set_location_assignment PIN_V16 -to resetApp
 
-# Set pin location for StartStopSwitch
+# Set pin location for StartStopSwitch SW[0]
 set_location_assignment PIN_AB12 -to StartStopSwitch
 
-# Set pin location for LockSwitch
+# Set pin location for LockSwitch SW[1]
 set_location_assignment PIN_AC12 -to LockSwitch
 
 # Set pin location for chess move input keys
@@ -46,6 +46,9 @@ set_location_assignment PIN_Y16 -to KeyLeft
 set_location_assignment PIN_W15 -to KeyDown
 set_location_assignment PIN_AA15 -to KeyUp
 set_location_assignment PIN_AA14 -to KeyRight
+
+# Set pin location for TimerSwitch SW[2]
+set_location_assignment PIN_AF9 -to TimerSwitch
 
 # Set seven segment displays for chess timer for White Player
 set_location_assignment PIN_AE26 -to WhiteClockUnitsSec[0]
