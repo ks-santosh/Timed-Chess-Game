@@ -43,8 +43,14 @@ localparam SQUARE_SIZE = 30;
 localparam CHESSMEN_SIZE = SQUARE_SIZE*SQUARE_SIZE*6*2;
 localparam LIGHT_CHESSMEN_START = DARK_CHESSMEN_START + CHESSMEN_SIZE;
 
+// WIN text image
+localparam WIN_IMG_START = LIGHT_CHESSMEN_START + CHESSMEN_SIZE;
+localparam WIN_IMG_HEIGHT = 20;
+localparam WIN_IMG_WIDTH = 116;
+localparam WIN_IMG_SIZE = WIN_IMG_HEIGHT*WIN_IMG_WIDTH;
+
 // chess square
-localparam LIGHT_IDX = LIGHT_CHESSMEN_START + CHESSMEN_SIZE;
+localparam LIGHT_IDX = WIN_IMG_START + WIN_IMG_SIZE;
 localparam DARK_IDX = LIGHT_IDX + 1;
 localparam PRESELECT_IDX = DARK_IDX + 1;
 localparam SELECT_IDX = PRESELECT_IDX + 1;
@@ -67,7 +73,8 @@ initial begin
 	 $readmemh("MemInitFiles/ClockImg.hex", SpriteSheet, LCD_SIZE, LCD_SIZE + BANNER_SIZE - 1);
 	 $readmemh("MemInitFiles/DarkChessmen.hex", SpriteSheet, DARK_CHESSMEN_START, DARK_CHESSMEN_START + CHESSMEN_SIZE - 1);
 	 $readmemh("MemInitFiles/LightChessmen.hex", SpriteSheet, LIGHT_CHESSMEN_START, LIGHT_CHESSMEN_START + CHESSMEN_SIZE - 1);
-
+	 $readmemh("MemInitFiles/WinnerTextImg.hex", SpriteSheet, WIN_IMG_START, WIN_IMG_START + WIN_IMG_SIZE - 1);
+	 
 	 SpriteSheet[LIGHT_IDX] = LIGHT_COLOUR;
 	 SpriteSheet[DARK_IDX] = DARK_COLOUR;
 	 SpriteSheet[PRESELECT_IDX] = PRESELECT_COLOUR;
@@ -165,6 +172,7 @@ localparam MATRIX_WIDTH = CHESS_SQUARES * SQUARE_WIDTH;
 
 wire [MATRIX_WIDTH - 1:0] ChessMatrix;
 wire Player;
+wire [1:0] Checkmate;
 
 ChessLayoutMatrix ChessLayoutMatrix(
 	 .clock(clock),
@@ -175,7 +183,8 @@ ChessLayoutMatrix ChessLayoutMatrix(
     .KeyRight(KeyRight),
 	 .resetApp(resetApp),
     .Layout(ChessMatrix),
-	 .Player(Player)
+	 .Player(Player),
+	 .Checkmate(Checkmate)
 );
 
 wire WhiteTimeout;
@@ -242,8 +251,21 @@ function [16:0] ChessPixelIdx;
 			ChessPixelIdx = PixelIdx;
 		end else begin
 			if((y < BANNER_HEIGHT) || (y >= LCD_HEIGHT - BANNER_HEIGHT))begin
-				ChessPixelIdx = PixelIdx;
-			
+				if(WhiteTimeout || (Checkmate[0] && (Checkmate[1] == 1'b0))) begin
+					if((x >= 63) && (x <= 63 + WIN_IMG_WIDTH - 1) && (y >= 12) && (y <= 12 + WIN_IMG_HEIGHT - 1)) begin
+						ChessPixelIdx = WIN_IMG_START + (y - 12)*WIN_IMG_WIDTH + (x - 63);
+					end else begin
+						ChessPixelIdx = PixelIdx;
+					end
+				end else if(BlackTimeout || (Checkmate[0] && (Checkmate[1] == 1'b1))) begin 
+					if((x >= 63) && (x <= 63 + WIN_IMG_WIDTH - 1) && (y >= 290) && (y <= 290 + WIN_IMG_HEIGHT - 1)) begin
+						ChessPixelIdx = WIN_IMG_START + (y - 290)*WIN_IMG_WIDTH + (x - 63);
+					end else begin
+						ChessPixelIdx = PixelIdx;
+					end					
+				end else begin
+					ChessPixelIdx = PixelIdx;
+				end
 			end else begin
 				if (YQuotient % 2 == 0) begin
 					if(XQuotient % 2 == 0) begin
