@@ -181,7 +181,7 @@ ChessLayoutMatrix ChessLayoutMatrix(
     .KeyUp(KeyUp),
     .KeyDown(KeyDown),
     .KeyRight(KeyRight),
-	 .resetApp(resetApp),
+	 .reset(resetApp),
     .Layout(ChessMatrix),
 	 .Player(Player),
 	 .Checkmate(Checkmate)
