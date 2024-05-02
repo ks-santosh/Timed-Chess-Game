@@ -189,11 +189,16 @@ ChessLayoutMatrix ChessLayoutMatrix(
 
 wire WhiteTimeout;
 wire BlackTimeout;
+wire WhiteTimerFlag;
+wire BlackTimerFlag;
+
+assign WhiteTimerFlag = Player & (~Checkmate[0]) & (~BlackTimeout);
+assign BlackTimerFlag = (~Player) & (~Checkmate[0]) & (~WhiteTimeout);
 
 CountdownTimer WhiteTimer(
 	.clock(clock),
 	.reset(resetApp),
-	.flag(Player),
+	.flag(WhiteTimerFlag),
 	.SegMins		(WhiteClockMins    ),
 	.SegSecTens (WhiteClockTensSec ),
 	.SegSecUnits(WhiteClockUnitsSec),
@@ -203,7 +208,7 @@ CountdownTimer WhiteTimer(
 CountdownTimer BlackTimer(
 	.clock(clock),
 	.reset(resetApp),
-	.flag(~Player),
+	.flag(BlackTimerFlag),
 	.SegMins		(BlackClockMins    ),
 	.SegSecTens (BlackClockTensSec ),
 	.SegSecUnits(BlackClockUnitsSec),
