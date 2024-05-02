@@ -28,7 +28,10 @@ integer i;
 
 initial begin
 	$readmemh("MemInitFiles/ChessLayoutMatrix.hex", LayoutMatrix);
+	$readmemh("MemInitFiles/ChessLayoutMatrix.hex", InitMatrix);
+	
 	for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
+		InitLayout[i*SQUARE_WIDTH +: SQUARE_WIDTH] = InitMatrix[i];
 	end
 end 
 
@@ -221,6 +224,11 @@ endfunction
 always @ (posedge OutClock or posedge resetApp) begin
     if (resetApp) begin
 		Layout <= InitLayout;
+		
+		for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
+			 LayoutMatrix[i] = InitMatrix[i];
+		end
+		
 		SelectSquareX = 3'd2;
 		SelectSquareY = 3'd3;
 		SelectSquareIdx = SelectSquareY*8 + SelectSquareX;
