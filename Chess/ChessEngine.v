@@ -217,6 +217,7 @@ CountdownTimer BlackTimer(
 
 localparam START_STATE = 3'd0;
 localparam PLAY_STATE  = 3'd1;
+localparam END_STATE   = 3'd2;
 
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
@@ -325,6 +326,13 @@ always @ (posedge clock or posedge resetApp) begin
 				end
 			end
 			PLAY_STATE: begin
+				if(StartStopSwitch == OFF) begin
+					State <= START_STATE;
+				end else if(Checkmate[0] || WhiteTimeout || BlackTimeout) begin
+					State <= END_STATE;
+				end
+			end
+			END_STATE: begin
 				if(StartStopSwitch == OFF) begin
 					State <= START_STATE;
 				end
