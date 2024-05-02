@@ -86,8 +86,8 @@ set_location_assignment PIN_AF9 -to globalReset
 set_location_assignment PIN_V16 -to resetApp
 set_location_assignment PIN_AB12 -to StartStopSwitch
 set_location_assignment PIN_Y16 -to KeyLeft
-set_location_assignment PIN_W15 -to KeyUp
-set_location_assignment PIN_AA15 -to KeyDown
+set_location_assignment PIN_AA15 -to KeyUp
+set_location_assignment PIN_W15 -to KeyDown
 set_location_assignment PIN_AA14 -to KeyRight
 set_global_assignment -name EDA_NETLIST_WRITER_OUTPUT_DIR simulation -section_id eda_simulation
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation

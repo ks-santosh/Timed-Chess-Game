@@ -43,8 +43,8 @@ set_location_assignment PIN_AC12 -to LockSwitch
 
 # Set pin location for chess move input keys
 set_location_assignment PIN_Y16 -to KeyLeft
-set_location_assignment PIN_W15 -to KeyUp
-set_location_assignment PIN_AA15 -to KeyDown
+set_location_assignment PIN_W15 -to KeyDown
+set_location_assignment PIN_AA15 -to KeyUp
 set_location_assignment PIN_AA14 -to KeyRight
 
 # Set seven segment displays for chess timer for White Player
