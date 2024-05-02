@@ -20,6 +20,7 @@ module ChessLayoutMatrix #(
 );
 
 reg [SQUARE_WIDTH - 1:0] LayoutMatrix [0:CHESS_SQUARES - 1];
+reg [SQUARE_WIDTH - 1:0] InitMatrix [0:CHESS_SQUARES - 1];
 reg [MATRIX_WIDTH - 1:0] InitLayout;
 reg [MATRIX_WIDTH - 1:0] FlatLayout;
 integer i;
@@ -28,14 +29,13 @@ integer i;
 initial begin
 	$readmemh("MemInitFiles/ChessLayoutMatrix.hex", LayoutMatrix);
 	for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
-		InitLayout[i*SQUARE_WIDTH +: SQUARE_WIDTH] = LayoutMatrix[i];
 	end
 end 
 
 wire OutClock;
 
 ClockFrequencyDivider #(
-	.OUTPUT_FREQUENCY(10)
+	.OUTPUT_FREQUENCY(5)
 ) ClockFrequencyDivider (
 
     .InClock(clock),
@@ -158,14 +158,12 @@ function ValidMove;
 		case (Chessman)
 			PAWN: begin
 				if(Player == WHITE_PLAYER) begin
-					if(((DestY == SourceY - 1) && (DestX == SourceX)) || (DestY == 4'd4)) begin
 						ValidMove = TRUE;
 					end else if((DestY == SourceY - 1) && ((DestX == SourceX - 1) || (DestX == SourceX + 1))
 									&& (TargetChessman != 3'd0)) begin
 						ValidMove = TRUE;									
 					end
 				end else 
-					if(((DestY == SourceY + 1)  && (DestX == SourceX))|| (DestY == 4'd3))begin
 						ValidMove = TRUE;
 					end else if((DestY == SourceY + 1) && ((DestX == SourceX - 1) || (DestX == SourceX + 1))
 									&& (TargetChessman != 3'd0)) begin
@@ -277,14 +275,14 @@ always @ (posedge OutClock or posedge resetApp) begin
 			if((LayoutMatrix[LockSquareIdx][3] != LayoutMatrix[SelectSquareIdx][3]) || (LayoutMatrix[SelectSquareIdx][2:0] == 3'd0)) begin
 				if(ValidMove(Player, Chessman, LayoutMatrix[SelectSquareIdx][2:0], SourceX, SourceY, DestX, DestY)) begin
 					if(!ChessmanInPath(SourceX, SourceY, DestX, DestY)) begin
-						if(LayoutMatrix[SelectSquareIdx][3] == KING) begin
+						if(LayoutMatrix[SelectSquareIdx][2:0] == KING) begin
 							Checkmate[0] <= 1;
 							Checkmate[1] <= Player;
 						end else begin
-							LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
-							LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
 							Player <= ~Player;
-						begin
+						end
+						LayoutMatrix[SelectSquareIdx][3:0] = LayoutMatrix[LockSquareIdx][3:0];
+						LayoutMatrix[LockSquareIdx][3:0] = 4'd0;
 					end
 				end
 			end
