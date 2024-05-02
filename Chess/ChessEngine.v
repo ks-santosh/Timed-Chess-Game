@@ -174,6 +174,8 @@ wire [MATRIX_WIDTH - 1:0] ChessMatrix;
 wire Player;
 wire [1:0] Checkmate;
 
+assign GameReset = resetApp | State[0];
+
 ChessLayoutMatrix ChessLayoutMatrix(
 	 .clock(clock),
 	 .LockSwitch(LockSwitch),
@@ -181,23 +183,28 @@ ChessLayoutMatrix ChessLayoutMatrix(
     .KeyUp(KeyUp),
     .KeyDown(KeyDown),
     .KeyRight(KeyRight),
-	 .reset(resetApp),
+	 .reset(GameReset),
     .Layout(ChessMatrix),
 	 .Player(Player),
 	 .Checkmate(Checkmate)
 );
+
+
+localparam START_STATE = 3'b001;
+localparam PLAY_STATE  = 3'b010;
+localparam END_STATE   = 3'b100;
 
 wire WhiteTimeout;
 wire BlackTimeout;
 wire WhiteTimerFlag;
 wire BlackTimerFlag;
 
-assign WhiteTimerFlag = Player & (~Checkmate[0]) & (~BlackTimeout);
-assign BlackTimerFlag = (~Player) & (~Checkmate[0]) & (~WhiteTimeout);
+assign WhiteTimerFlag = Player & (~Checkmate[0]) & (~BlackTimeout) & State[1];
+assign BlackTimerFlag = (~Player) & (~Checkmate[0]) & (~WhiteTimeout) & State[1];
 
 CountdownTimer WhiteTimer(
 	.clock(clock),
-	.reset(resetApp),
+	.reset(GameReset),
 	.flag(WhiteTimerFlag),
 	.SegMins		(WhiteClockMins    ),
 	.SegSecTens (WhiteClockTensSec ),
@@ -207,17 +214,13 @@ CountdownTimer WhiteTimer(
 
 CountdownTimer BlackTimer(
 	.clock(clock),
-	.reset(resetApp),
+	.reset(GameReset),
 	.flag(BlackTimerFlag),
 	.SegMins		(BlackClockMins    ),
 	.SegSecTens (BlackClockTensSec ),
 	.SegSecUnits(BlackClockUnitsSec),
 	.Timeout (BlackTimeout)
 );
-
-localparam START_STATE = 3'd0;
-localparam PLAY_STATE  = 3'd1;
-localparam END_STATE   = 3'd2;
 
 localparam ON = 1'b1;
 localparam OFF = 1'b0;
@@ -264,7 +267,7 @@ function [16:0] ChessPixelIdx;
 						ChessPixelIdx = PixelIdx;
 					end
 				end else if(BlackTimeout || (Checkmate[0] && (Checkmate[1] == 1'b1))) begin 
-					if((x >= 63) && (x <= 63 + WIN_IMG_WIDTH - 1) && (y >= 290) && (y <= 290 + WIN_IMG_HEIGHT - 1)) begin
+					if((x >= 63) && (x <= 63 + WIN_IMG_WIDTH - 1) && (y >= 288) && (y <= 288 + WIN_IMG_HEIGHT - 1)) begin
 						ChessPixelIdx = WIN_IMG_START + (y - 290)*WIN_IMG_WIDTH + (x - 63);
 					end else begin
 						ChessPixelIdx = PixelIdx;
