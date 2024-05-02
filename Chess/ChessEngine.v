@@ -312,8 +312,8 @@ function [16:0] ChessPixelIdx;
 	end
 endfunction
 
-always @ (posedge clock or posedge resetApp) begin 
-    if (resetApp) begin
+always @ (posedge clock or posedge resetApp or posedge globalReset) begin 
+    if (resetApp || globalReset) begin
         pixelData <= 16'b0;
         xAddr     <= 8'b0;
         yAddr     <= 9'b0;
