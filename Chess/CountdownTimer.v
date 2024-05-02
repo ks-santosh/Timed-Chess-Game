@@ -11,6 +11,8 @@ module CountdownTimer #(
 	 output reg Timeout
 );
 
+wire OutClock;
+
 ClockFrequencyDivider #(
 	.OUTPUT_FREQUENCY(1)
 ) ClockSeconds (
@@ -54,7 +56,7 @@ ClockFrequencyDivider #(
 				// Countdown logic when flag is high
 				if((Seconds == 0) && (Minutes == 0)) begin
 					Timeout <= 1'b1;
-				end if(Seconds == 0) begin
+				end else if(Seconds == 0) begin
 					Minutes <= Minutes - 1;
 					Seconds <= 7'd59;
 				end else begin
