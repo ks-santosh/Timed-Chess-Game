@@ -158,12 +158,16 @@ function ValidMove;
 		case (Chessman)
 			PAWN: begin
 				if(Player == WHITE_PLAYER) begin
+					if((((DestY == SourceY - 1) && (DestX == SourceX)) || (DestY == 4'd4))
+						&& (TargetChessman == 3'd0)) begin
 						ValidMove = TRUE;
 					end else if((DestY == SourceY - 1) && ((DestX == SourceX - 1) || (DestX == SourceX + 1))
 									&& (TargetChessman != 3'd0)) begin
 						ValidMove = TRUE;									
 					end
 				end else 
+					if((((DestY == SourceY + 1)  && (DestX == SourceX))|| (DestY == 4'd3))
+						&& (TargetChessman == 3'd0)) begin
 						ValidMove = TRUE;
 					end else if((DestY == SourceY + 1) && ((DestX == SourceX - 1) || (DestX == SourceX + 1))
 									&& (TargetChessman != 3'd0)) begin
