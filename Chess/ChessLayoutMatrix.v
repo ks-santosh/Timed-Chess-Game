@@ -11,7 +11,7 @@ module ChessLayoutMatrix #(
     input         KeyUp,
     input         KeyDown,
     input         KeyRight,
-	 input         resetApp,
+	 input         reset,
     
    /* OUTPUTS */
     output reg [MATRIX_WIDTH - 1:0]	Layout,
@@ -42,7 +42,7 @@ ClockFrequencyDivider #(
 ) ClockFrequencyDivider (
 
     .InClock(clock),
-	 .reset(resetApp),
+	 .reset(reset),
     .OutClock(OutClock)
 ); 
 
@@ -221,8 +221,8 @@ function ValidMove;
 endfunction
 
 
-always @ (posedge OutClock or posedge resetApp) begin
-    if (resetApp) begin
+always @ (posedge OutClock or posedge reset) begin
+    if (reset) begin
 		Layout <= InitLayout;
 		
 		for(i = 0; i < CHESS_SQUARES; i = i + 1) begin
