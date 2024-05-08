@@ -109,25 +109,28 @@ The code for this submodule is taken from [github resources](https://github.com/
 
 ## Gameplay
 
-when the game is started the LCD will display this screen.
+When the game is started the LCD will display this screen.
+
 ![Game Start Screen](Images/GameStartScreen.png)
 
 Upon swithing on SW[0] which is assigned as PlaySwitch, the game will show chess layout. If the timer is enabled using TimerSwitch SW[2] the timer for the white player will immediately start the countdown.
+
 ![Game Start Screen](Images/GameplayOnHardware.png)
 
 The square with the yellow border is the square currently selected. This square can be moved up/down/right/left using the four keys on DE1-SoC. The movement associated with each key press is shown in the game's start screen.
+
 ![Game Start Screen](Images/GameSelectSquareScreen.png)
 
 The player can move the selection towards their chess piece. Once thier chess piece is selected they need to use LockSwitch SW[1] to lock that particular chess piece. This will tell the game that this piece is selected for re-positioning. The yellow border will turn to blue once the piece is locked successfully. If chess piece of opponent is selected the piece won't get locked.
+
 ![Game Start Screen](Images/GameSelectChessmanScreen.png)
 
 Now the target square can be selected by pressing the four keys. The target square where the chess piece needs to be positioned will he highlighted by a green border.
+
 ![Game Start Screen](Images/GameMovePieceScreen.png)
 
 Once the LockSwitch is switched off it will immediately update the selected chess piece position. If the target square violates the rules of chess and the movement of that particular chess piece, the position won't get updated. 
+
 ![Game Start Screen](Images/GameEndScreen.png)
 
 As the white team captured the black team's King, the white team is the winner. The game ends with a 'WINNER' text displayed on their banner. The game will also end if the countdown timer reaches 0. The player who didn't timeout will be declared as winner.
-
-
-
