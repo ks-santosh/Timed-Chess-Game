@@ -3,7 +3,7 @@ module ChessEngine (
    /* INPUTS */
     input         clock,
     input         globalReset,
-    input         StartStopSwitch,
+    input         PlaySwitch,
 	 input			TimerSwitch,
     input         LockSwitch,
     input         KeyLeft,
@@ -325,19 +325,19 @@ always @ (posedge clock or posedge resetApp or posedge globalReset) begin
 
 		case (State)
 			START_STATE: begin
-				if(StartStopSwitch == ON) begin
+				if(PlaySwitch == ON) begin
 					State <= PLAY_STATE;
 				end
 			end
 			PLAY_STATE: begin
-				if(StartStopSwitch == OFF) begin
+				if(PlaySwitch == OFF) begin
 					State <= START_STATE;
 				end else if(Checkmate[0] || WhiteTimeout || BlackTimeout) begin
 					State <= END_STATE;
 				end
 			end
 			END_STATE: begin
-				if(StartStopSwitch == OFF) begin
+				if(PlaySwitch == OFF) begin
 					State <= START_STATE;
 				end
 			end
