@@ -1,3 +1,20 @@
+/*
+ * CountdownTimer
+ * ----------------
+ * By: Yuehan You
+ * Date: 26/04/2024
+ *
+ * Short Description
+ * -----------------
+ * The SevenSegmentDisplay module is responsible for driving 
+ * a seven-segment display to represent numeric digits from 0 to 9. 
+ * It takes a 4-bit input representing the decimal value to be displayed 
+ * and outputs the appropriate signals to illuminate the segments of the 
+ * display accordingly. The module includes logic to decode the input value 
+ * into the corresponding segment patterns required to display the digit. 
+ * Each segment of the display is individually controlled, allowing for 
+ * the visualization of various numerical values. 
+ */
 module CountdownTimer #( 
 	parameter MINUTES = 5,
 	parameter SECONDS = 0
@@ -30,17 +47,17 @@ ClockFrequencyDivider #(
     // Instantiate seven-segment decoder modules
     SevenSegmentDisplay DisplayMins(
         .DecimalDigit(Minutes),
-        .SegOutput(SegMins)
+        .SegOutput   (SegMins)
     );
 
     SevenSegmentDisplay DisplaySecTens(
         .DecimalDigit(SecondsTens),
-        .SegOutput(SegSecTens)
+        .SegOutput   ( SegSecTens)
     );
 
     SevenSegmentDisplay DisplaySecUnits(
         .DecimalDigit(SecondsUnits),
-        .SegOutput(SegSecUnits)
+        .SegOutput   ( SegSecUnits)
     );
 
 
@@ -55,16 +72,16 @@ ClockFrequencyDivider #(
         end else if (flag) begin
 				// Countdown logic when flag is high
 				if((Seconds == 0) && (Minutes == 0)) begin
-					Timeout <= 1'b1;
+					Timeout <= 1'b1;	// Set timeout if timer reaches 0
 				end else if(Seconds == 0) begin
-					Minutes <= Minutes - 1;
+					Minutes <= Minutes - 1;	// decrement minutes by 1 if 60 seconds passed
 					Seconds <= 7'd59;
 				end else begin
-					Seconds <= Seconds - 1;
+					Seconds <= Seconds - 1; // decrement seconds every second
 				end
 				
-				SecondsTens <= Seconds/10;
-				SecondsUnits <= Seconds % 10;
+				SecondsTens <= Seconds/10;    // value at tens place of seconds
+				SecondsUnits <= Seconds % 10;	// valua at units place of seconds
 		  end
     end
 	 
