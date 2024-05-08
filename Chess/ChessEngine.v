@@ -91,7 +91,7 @@ reg  [ 8:0] yAddr;
 reg  [15:0] pixelData;
 wire        pixelReady;
 reg         pixelWrite;
-reg  [1:0]  State;
+reg  [2:0]  State;
 
 LT24Display Display (
     //Clock and Reset In
