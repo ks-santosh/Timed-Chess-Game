@@ -1,5 +1,5 @@
 /*
- * Chess
+ * SevenSegmentDisplay
  * ----------------
  * By: Yuehan You
  * Date: 26/04/2024
