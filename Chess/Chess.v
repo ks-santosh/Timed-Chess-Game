@@ -3,7 +3,7 @@ module Chess (
    /* INPUTS */
     input         clock,
     input         globalReset,
-    input         StartStopSwitch,
+    input         PlaySwitch,
 	 input			TimerSwitch,
     input         LockSwitch,
     input         KeyLeft,
@@ -33,7 +33,7 @@ ChessEngine ChessEngine (
     .clock       (clock      ),
     .globalReset (globalReset),
     
-	 .StartStopSwitch (StartStopSwitch),
+	 .PlaySwitch (PlaySwitch),
 	 .LockSwitch (LockSwitch),
 	 .TimerSwitch(TimerSwitch),
 	 .KeyLeft (KeyLeft),

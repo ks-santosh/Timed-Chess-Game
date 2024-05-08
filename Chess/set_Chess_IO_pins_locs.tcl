@@ -35,8 +35,8 @@ set_location_assignment PIN_AE12 -to globalReset
 # Set pin location for resetApp
 set_location_assignment PIN_V16 -to resetApp
 
-# Set pin location for StartStopSwitch SW[0]
-set_location_assignment PIN_AB12 -to StartStopSwitch
+# Set pin location for PlaySwitch SW[0]
+set_location_assignment PIN_AB12 -to PlaySwitch
 
 # Set pin location for LockSwitch SW[1]
 set_location_assignment PIN_AC12 -to LockSwitch
